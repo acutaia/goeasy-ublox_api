@@ -84,6 +84,8 @@ class TestDatabase:
         # Try to extract data that aren't inside the db
         data = await DataBase.extract_raw_data(raw_svId, timestampMessage_unix+4)
         assert data.raw_data is None, "Raw Data should be none"
+        data = await DataBase.extract_raw_data(raw_svId+1, timestampMessage_unix)
+        assert data.raw_data is None, "Raw Data should be none"
 
         # Disconnect from the Database
         await DataBase.disconnect()
