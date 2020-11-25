@@ -1,0 +1,22 @@
+sudo: true
+
+services:
+  - postgresql
+
+language: "python"
+python:
+  - "3.7"
+  - "3.8"
+
+install:
+  - pip install -r requirements.txt
+  - pip install codecov
+
+before_script:
+  - psql -c "ALTER USER postgres WITH ENCRYPTED PASSWORD 'postgres';"
+
+script:
+  - pytest --cov=app tests
+
+after_success:
+  - codecov
