@@ -1,0 +1,10 @@
+# Code
+uvicorn[standard]>=0.12.3
+fastapi>=0.61.2
+asyncpg>=0.21.0
+python-jose[cryptography]>=3.2.0
+
+# Testing
+pytest>=6.1.2
+pytest-asyncio>=0.14.0
+pytest-cov>=2.10.1
