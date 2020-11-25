@@ -65,7 +65,6 @@ class TestDatabase:
     """
     Test the postgresql module
     """
-    database = DataBase()
 
     @pytest.mark.asyncio
     async def test_extract_raw_data(self):
@@ -76,7 +75,7 @@ class TestDatabase:
         # Setup the Database
         await FakeDatabase.create_database()
         # Connect to the Database
-        await self.database.connect()
+        await DataBase.connect()
 
         # Try to extract data that are inside in the db
         data = await DataBase.extract_raw_data(raw_svId, timestampMessage_unix)
@@ -87,7 +86,7 @@ class TestDatabase:
         assert data.raw_data is None, "Raw Data should be none"
 
         # Disconnect from the Database
-        await self.database.disconnect()
+        await DataBase.disconnect()
 
     @pytest.mark.asyncio
     async def test_extract_satellites_info(self):
@@ -98,7 +97,7 @@ class TestDatabase:
         # Setup the Database
         await FakeDatabase.create_database()
         # Connect to the Database
-        await self.database.connect()
+        await DataBase.connect()
 
         # Fake satellite requested raw_data
         satellite = Satellite(
@@ -118,4 +117,4 @@ class TestDatabase:
         assert satellites_info[0].info[1].raw_data is None, "Raw Data must be None"
 
         # Disconnect from the Database
-        await self.database.disconnect()
+        await DataBase.disconnect()

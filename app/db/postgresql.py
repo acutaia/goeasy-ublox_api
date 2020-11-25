@@ -54,7 +54,7 @@ class DataBase:
 
     @classmethod
     async def disconnect(cls):
-        await cls.pool.terminate()
+        await cls.pool.close()
 
     @classmethod
     async def extract_satellites_info(
