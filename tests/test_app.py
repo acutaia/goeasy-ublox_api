@@ -61,6 +61,6 @@ def event_loop():
 
 @pytest.mark.asyncio
 async def test_docs():
-    async with AsyncClient(app=app, base_url="https://api/v1/galileo/") as ac:
+    async with AsyncClient(app=app, base_url="http://localhost:8080/api/v1/galileo/") as ac:
         response = await ac.get("/docs")
     assert response.status_code == 200
