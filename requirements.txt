@@ -1,8 +1,10 @@
 # Code
-uvicorn[standard]>=0.12.3
-fastapi>=0.61.2
 asyncpg>=0.21.0
+fastapi>=0.61.2
+httpx==0.16.1
+orjson>=3.4.4
 python-jose[cryptography]>=3.2.0
+uvicorn[standard]>=0.12.3
 
 # Testing
 pytest>=6.1.2
