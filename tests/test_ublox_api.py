@@ -31,7 +31,7 @@ from starlette.status import HTTP_401_UNAUTHORIZED, HTTP_403_FORBIDDEN
 # Internal
 from .postgresql import raw_svId, timestampMessage_unix, raw_data
 from .security import INVALID_TOKEN, configure_security_for_testing, get_valid_token
-from app.main import app, RawData, Satellite, SatelliteInfo
+from app.main import app, RawData, SatelliteInfo
 
 # ------------------------------------------------------------------------------
 
@@ -48,6 +48,7 @@ __docformat__ = "restructuredtext en"
 
 configure_security_for_testing()
 """Configure the app for testing purpose"""
+
 
 def test_docs():
     """
