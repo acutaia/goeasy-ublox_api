@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Tests the app.database package
+Test the app.database package
 
 :author: Angelo Cutaia
 :copyright: Copyright 2020, Angelo Cutaia
@@ -22,9 +22,6 @@ Tests the app.database package
     See the License for the specific language governing permissions and
     limitations under the License.
 """
-
-# Standard library
-import asyncio
 
 # Third party
 import uvloop
