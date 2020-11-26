@@ -9,10 +9,6 @@ from ..config import get_security_settings
 class Signature(HTTPBearer):
     async def __call__(self, request: Request) -> None:
         credentials: HTTPAuthorizationCredentials = await super().__call__(request)
-        if not credentials.scheme == "Bearer":
-            raise HTTPException(
-                status_code=HTTP_403_FORBIDDEN, detail="Wrong authentication method"
-            )
 
         jwt_token = credentials.credentials
         settings = get_security_settings()

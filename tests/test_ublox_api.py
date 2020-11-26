@@ -54,7 +54,14 @@ def test_docs():
     """
     Test the documentation of ublox_api
     """
+
+    # Load the cache of the documentation
+    app.openapi_schema = None
+    app.openapi()
+    app.openapi()
+
     with TestClient(app=app) as client:
+        # Try to get the documentation
         response = client.get(url="/api/v1/galileo/docs")
         assert response.status_code == 200
 
