@@ -79,7 +79,7 @@ class TestDatabase:
         assert raw_data == data.raw_data, "Raw Data should be equal"
 
         # Try to extract data that aren't inside the db
-        data = await DataBase.extract_raw_data(raw_svId, timestampMessage_unix+4)
+        data = await DataBase.extract_raw_data(raw_svId, timestampMessage_unix+4000)
         assert data.raw_data is None, "Raw Data should be none"
         data = await DataBase.extract_raw_data(raw_svId+1, timestampMessage_unix)
         assert data.raw_data is None, "Raw Data should be none"
