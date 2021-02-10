@@ -106,7 +106,7 @@ class TestDatabase:
                     timestamp=timestampMessage_unix
                 ),
                 RawData(
-                    timestamp=timestampMessage_unix+4)
+                    timestamp=timestampMessage_unix+4000)
             ]
         )
         # Try to extract satellites info from the db
