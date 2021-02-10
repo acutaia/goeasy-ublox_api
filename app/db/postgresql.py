@@ -112,7 +112,7 @@ class DataBase:
                 f'SELECT raw_data '
                 f'FROM "{datetime.fromtimestamp(timestamp).year}_{cls.nation}_{satellite_id}" '
                 f'WHERE timestampmessage_unix '
-                f'BETWEEN {timestamp - 1} AND {timestamp + 1};'
+                f'BETWEEN {timestamp - 1000} AND {timestamp + 1000};'
             )
 
         except UndefinedTableError:
