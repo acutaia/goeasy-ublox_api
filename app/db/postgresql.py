@@ -110,7 +110,7 @@ class DataBase:
         try:
             return await conn.fetchval(
                 f'SELECT raw_data '
-                f'FROM "{datetime.fromtimestamp(timestamp).year}_{cls.nation}_{satellite_id}" '
+                f'FROM "{datetime.fromtimestamp(int(timestamp/1000)).year}_{cls.nation}_{satellite_id}" '
                 f'WHERE timestampmessage_unix '
                 f'BETWEEN {timestamp - 1000} AND {timestamp + 1000};'
             )
