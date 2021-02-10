@@ -61,7 +61,7 @@ raw_galWno = 1073
 raw_leapS = 18
 """Galileo leap seconds"""
 
-timestampMessage_unix = 1584609710
+timestampMessage_unix = 1584609710123
 """Time stamp of the message in a unix system"""
 
 timestampMessage_galileo = 649329725
