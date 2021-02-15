@@ -28,7 +28,7 @@ import os
 
 # Third Party
 import dotenv
-import orjson
+import ujson
 import requests
 from pydantic import BaseModel
 
@@ -85,6 +85,6 @@ def get_valid_token() -> str:
     """Get a valid token for testing from Keycloak"""
     r = requests.post(url=URL, data=DATA)
 
-    return Token.parse_obj(orjson.loads(r.content)).access_token
+    return Token.parse_obj(ujson.loads(r.content)).access_token
 
 
