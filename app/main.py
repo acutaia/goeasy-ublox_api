@@ -77,13 +77,13 @@ async def custom_redoc_ui_html():
 )
 async def raw_data(
     satellite_id: int = Path(..., description="Id of the Satellite", example=36),
-    timestamp: int = Path(..., description="Timestamp of the data to retrieve", example=1587506414)
+    timestamp: int = Path(..., description="Timestamp in ms of the data to retrieve", example=1613406498000)
 ):
     """
     Extract the Raw Data of a satellite in a specific timestamp
 
     - **satellite_id**: identification code of the satellite
-    - **timestamp**: requested timestamp
+    - **timestamp**: requested timestamp in ms
     - **raw_data**: data sent by the satellite in that timestamp
     """
     return await database.extract_raw_data(satellite_id, timestamp)
@@ -103,7 +103,7 @@ async def satellites_info(satellites: List[Satellite] = Body(...)):
     Extract the RaW Data of a satellites list in a specific timestamp
 
     - **satellite_id**: identification code of the satellite
-    - **info**: list of requested timestamp
+    - **info**: list of requested timestamp in ms
     - **raw_data**: data sent by the satellite in that timestamp
     """
     return await database.extract_satellites_info(satellites)
