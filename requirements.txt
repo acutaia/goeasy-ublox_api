@@ -1,6 +1,8 @@
 # Code
 asyncpg>=0.21.0
-fastapi[all]>=0.63.0, <0.64.0
+ujson >= 4.0.2
+fastapi>=0.63.0, <0.64.0
+uvicorn[standard] >= 0.13.3 < 0.14.0
 python-jose[cryptography]>=3.2.0
 
 # Testing
