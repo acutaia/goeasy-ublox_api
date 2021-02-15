@@ -28,7 +28,7 @@ from typing import List
 
 # Third Party
 from fastapi import FastAPI, Path, Body, Depends
-from fastapi.responses import ORJSONResponse
+from fastapi.responses import UJSONResponse
 from fastapi.openapi.utils import get_openapi
 from fastapi.openapi.docs import get_redoc_html
 from fastapi.staticfiles import StaticFiles
@@ -68,7 +68,7 @@ async def custom_redoc_ui_html():
 
 @app.get(
     "/api/v1/galileo/request/{satellite_id}/{timestamp}",
-    response_class=ORJSONResponse,
+    response_class=UJSONResponse,
     response_model=RawData,
     summary="Extract Raw Data",
     response_description="Raw Data",
@@ -91,7 +91,7 @@ async def raw_data(
 
 @app.post(
     "/api/v1/galileo/request",
-    response_class=ORJSONResponse,
+    response_class=UJSONResponse,
     response_model=List[SatelliteInfo],
     summary="Extract Satellites Info",
     response_description="The raw data of the satellites in the specified timestamps",
