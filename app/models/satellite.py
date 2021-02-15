@@ -33,8 +33,8 @@ class RawData(BaseModel):
     """Model of Raw Data of a Satellite"""
     timestamp: int = Field(
         ...,
-        description="Timestamp of the data to retrieve",
-        example=1587506414
+        description="Timestamp in ms of the data to retrieve",
+        example=1613406498000
     )
     raw_data: Optional[str] = Field(
         description="Data of the Satellite in a specific timestamp",
@@ -53,7 +53,7 @@ class Satellite(BaseModel):
         ...,
         description="List of requested Raw Data in specifics timestamps",
         example=[
-            RawData(timestamp=1587506414)
+            RawData(timestamp=1613406498000)
         ]
     )
 
@@ -65,7 +65,7 @@ class SatelliteInfo(Satellite):
         description="List of Raw Data of the satellite in a specific timestamp",
         example=[
             RawData(
-                timestamp=1587506414,
+                timestamp=1613406498000,
                 raw_data="02132c000224010009080200afe20702188a1e3ce838b8d80000fa90004037842a000000f377aaaa00403fdabdaaaa2ac260"
             )
         ]
