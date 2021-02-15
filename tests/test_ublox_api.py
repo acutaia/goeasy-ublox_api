@@ -25,7 +25,7 @@ App Tests
 
 # Third party
 from fastapi.testclient import TestClient
-import orjson
+import ujson
 from starlette.status import HTTP_401_UNAUTHORIZED, HTTP_403_FORBIDDEN
 
 # Internal
@@ -109,7 +109,7 @@ def test_satellites_info():
         # Try to get info without a Token
         response = client.post(
             url=f"/api/v1/galileo/request",
-            data=orjson.dumps(
+            data=ujson.dumps(
                 [
                     {
                         "satellite_id": raw_svId,
@@ -128,7 +128,7 @@ def test_satellites_info():
         # Try to get info with an invalid Token
         response = client.post(
             url=f"/api/v1/galileo/request",
-            data=orjson.dumps(
+            data=ujson.dumps(
                 [
                     {
                         "satellite_id": raw_svId,
@@ -150,7 +150,7 @@ def test_satellites_info():
         valid_token = get_valid_token()
         response = client.post(
             url=f"/api/v1/galileo/request",
-            data=orjson.dumps(
+            data=ujson.dumps(
                 [
                     {
                         "satellite_id": raw_svId,
