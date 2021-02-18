@@ -70,7 +70,15 @@ class DataBase:
         async with cls.pool.acquire() as conn:
             for satellite in satellites:
                 for raw_data in satellite.info:
-                    raw_data.raw_data = await cls._extract_data(conn, satellite.satellite_id, raw_data.timestamp)
+                    data = await cls._extract_data(conn, satellite.satellite_id, raw_data.timestamp)
+                    if data:
+                        if data[1]:
+                            raw_data.timestamp = data[1]
+                            raw_data.raw_data = data[0]
+                        else:
+                            raw_data.raw_data = None
+                    else:
+                        raw_data.raw_data = None
         return satellites
 
     @classmethod
@@ -87,10 +95,17 @@ class DataBase:
         :return: Raw Data of the satellite in the required timestamp
         """
         async with cls.pool.acquire() as conn:
-            return RawData(
-                timestamp=timestamp,
-                raw_data=await cls._extract_data(conn, satellite_id, timestamp)
-            )
+            raw_data = await cls._extract_data(conn, satellite_id, timestamp)
+            if raw_data:
+                if raw_data[1]:
+                    return RawData(
+                        timestamp=raw_data[1],
+                        raw_data=raw_data[0]
+                    )
+                return RawData(
+                    timestamp=timestamp,
+                    raw_data=None
+                )
 
     @classmethod
     async def _extract_data(
@@ -109,7 +124,7 @@ class DataBase:
         """
         try:
             return await conn.fetchval(
-                f'SELECT raw_data '
+                f'SELECT raw_data, timestampmessage_unix '
                 f'FROM "{datetime.fromtimestamp(int(timestamp/1000)).year}_{cls.nation}_{satellite_id}" '
                 f'WHERE timestampmessage_unix '
                 f'BETWEEN {timestamp - 1000} AND {timestamp + 1000};'
