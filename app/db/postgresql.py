@@ -72,11 +72,11 @@ class DataBase:
                 for raw_data in satellite.info:
                     data = await cls._extract_data(conn, satellite.satellite_id, raw_data.timestamp)
                     if data:
-                        if data[1]:
-                            raw_data.timestamp = data[1]
-                            raw_data.raw_data = data[0]
-                        else:
+                        if data[1] is None:
                             raw_data.raw_data = None
+                        else:
+                            raw_data.raw_data = data[0]
+                            raw_data.timestamp = data[1]
                     else:
                         raw_data.raw_data = None
         return satellites
@@ -97,14 +97,14 @@ class DataBase:
         async with cls.pool.acquire() as conn:
             raw_data = await cls._extract_data(conn, satellite_id, timestamp)
             if raw_data:
-                if raw_data[1]:
+                if raw_data[1] is None:
                     return RawData(
-                        timestamp=raw_data[1],
-                        raw_data=raw_data[0]
+                        timestamp=timestamp,
+                        raw_data=None
                     )
                 return RawData(
-                    timestamp=timestamp,
-                    raw_data=None
+                    timestamp=raw_data[1],
+                    raw_data=raw_data[0]
                 )
             return RawData(
                 timestamp=timestamp,
