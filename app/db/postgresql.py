@@ -127,7 +127,7 @@ class DataBase:
         :return: The Raw Data of the Satellite in the specified timestamp
         """
         try:
-            return await conn.fetchval(
+            return await conn.fetch(
                 f'SELECT raw_data, timestampmessage_unix '
                 f'FROM "{datetime.fromtimestamp(int(timestamp/1000)).year}_{cls.nation}_{satellite_id}" '
                 f'WHERE timestampmessage_unix '
