@@ -106,6 +106,10 @@ class DataBase:
                     timestamp=timestamp,
                     raw_data=None
                 )
+            return RawData(
+                timestamp=timestamp,
+                raw_data=None
+            )
 
     @classmethod
     async def _extract_data(
