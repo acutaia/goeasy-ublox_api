@@ -22,9 +22,6 @@ App main entry point
     See the License for the specific language governing permissions and
     limitations under the License.
 """
-# Standard Library
-from functools import lru_cache
-from typing import List
 
 # Third Party
 from fastapi import FastAPI, Path, Body, Depends
@@ -92,13 +89,13 @@ async def raw_data(
 @app.post(
     "/api/v1/galileo/request",
     response_class=UJSONResponse,
-    response_model=List[SatelliteInfo],
+    response_model=SatelliteInfo,
     summary="Extract Satellites Info",
     response_description="The raw data of the satellites in the specified timestamps",
     tags=["Galileo"],
     dependencies=[Depends(auth)]
 )
-async def satellites_info(satellites: List[Satellite] = Body(...)):
+async def satellites_info(satellite: Satellite = Body(...)):
     """
     Extract the RaW Data of a satellites list in a specific timestamp
 
@@ -106,7 +103,7 @@ async def satellites_info(satellites: List[Satellite] = Body(...)):
     - **info**: list of requested timestamp in ms
     - **raw_data**: data sent by the satellite in that timestamp
     """
-    return await database.extract_satellites_info(satellites)
+    return await database.extract_satellites_info(satellite)
 
 
 def custom_openapi():

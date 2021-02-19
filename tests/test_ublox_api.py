@@ -24,9 +24,9 @@ App Tests
 """
 
 # Third party
+from fastapi import status
 from fastapi.testclient import TestClient
 import ujson
-from starlette.status import HTTP_401_UNAUTHORIZED, HTTP_403_FORBIDDEN
 
 # Internal
 from .postgresql import raw_svId, timestampMessage_unix, raw_data
@@ -76,7 +76,7 @@ def test_raw_data():
         response = client.get(
             url=f"/api/v1/galileo/request/{raw_svId}/{timestampMessage_unix}"
         )
-        assert response.status_code == HTTP_403_FORBIDDEN, "Authentication is based on JWT"
+        assert response.status_code == status.HTTP_403_FORBIDDEN, "Authentication is based on JWT"
 
         # Try to get info with an invalid Token
         response = client.get(
@@ -85,7 +85,7 @@ def test_raw_data():
                 "Authorization": f"Bearer {INVALID_TOKEN}"
             }
         )
-        assert response.status_code == HTTP_401_UNAUTHORIZED, "Token not Valid"
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED, "Token not Valid"
 
         # Obtain a valid Token and try to get info
         valid_token = get_valid_token()
@@ -101,29 +101,27 @@ def test_raw_data():
         }, "Error during the extraction of data from the database"
 
 
-def test_satellites_info():
+def test_satellite_info():
     """
-    Test the endpoint that gives the satellites info
+    Test the endpoint that gives the satellite info for a list of timestamps
     """
     with TestClient(app=app) as client:
         # Try to get info without a Token
         response = client.post(
             url=f"/api/v1/galileo/request",
             data=ujson.dumps(
-                [
-                    {
-                        "satellite_id": raw_svId,
-                        "info": [
-                            {
-                                "timestamp": timestampMessage_unix
-                            }
-                        ]
-                    }
-                ]
+                {
+                    "satellite_id": raw_svId,
+                    "info": [
+                        {
+                            "timestamp": timestampMessage_unix
+                        }
+                    ]
+                }
             )
         )
 
-        assert response.status_code == HTTP_403_FORBIDDEN, "Authentication is based on JWT"
+        assert response.status_code == status.HTTP_403_FORBIDDEN, "Authentication is based on JWT"
 
         # Try to get info with an invalid Token
         response = client.post(
@@ -144,30 +142,29 @@ def test_satellites_info():
                 "Authorization": f"Bearer {INVALID_TOKEN}"
             }
         )
-        assert response.status_code == HTTP_401_UNAUTHORIZED, "Token not Valid"
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED, "Token not Valid"
 
         # Obtain a valid Token and try to get info
         valid_token = get_valid_token()
         response = client.post(
             url=f"/api/v1/galileo/request",
             data=ujson.dumps(
-                [
-                    {
-                        "satellite_id": raw_svId,
-                        "info": [
-                            {
-                                "timestamp": timestampMessage_unix
-                            }
-                        ]
-                    }
-                ]
+                {
+                    "satellite_id": raw_svId,
+                    "info": [
+                        {
+                            "timestamp": timestampMessage_unix
+                        }
+                    ]
+                }
             ),
-            headers={"Authorization": f"Bearer {valid_token}"
-                     }
+            headers={
+                "Authorization": f"Bearer {valid_token}"
+            }
         )
         assert response.status_code == 200, "The token must be valid"
 
-        assert response.json()[0] == SatelliteInfo(
+        assert response.json() == SatelliteInfo(
             satellite_id=raw_svId,
             info=[
                 RawData(

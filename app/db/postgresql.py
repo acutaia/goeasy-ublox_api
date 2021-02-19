@@ -18,7 +18,7 @@ Database utility functions
 """
 # Standard library
 from datetime import datetime
-from typing import List, Optional
+from typing import Optional
 # Third party
 from asyncpg import Connection, create_pool
 from asyncpg.pool import Pool
@@ -53,18 +53,17 @@ class DataBase:
     @classmethod
     async def extract_satellites_info(
             cls,
-            satellites: List[Satellite]
-    ) -> List[Satellite]:
+            satellite: Satellite
+    ) -> Satellite:
         """
         Extract all the raw data of the satellites list
-        :param satellites: List of satellites and timestamp
-        :return: A list containing all the satellites raw data in specific timestamp
+        :param satellite: Satellite Id with the list of the timestamp of the data to retrieve
+        :return: The info required for a specific Satellite
         """
         async with cls.pool.acquire() as conn:
-            for satellite in satellites:
-                for raw_data in satellite.info:
-                    raw_data.raw_data = await cls._extract_data(conn, satellite.satellite_id, raw_data.timestamp)
-        return satellites
+            for raw_data in satellite.info:
+                raw_data.raw_data = await cls._extract_data(conn, satellite.satellite_id, raw_data.timestamp)
+        return satellite
 
     @classmethod
     async def extract_raw_data(

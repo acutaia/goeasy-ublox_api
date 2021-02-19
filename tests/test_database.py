@@ -88,7 +88,7 @@ class TestDatabase:
         await DataBase.disconnect()
 
     @pytest.mark.asyncio
-    async def test_extract_satellites_info(self):
+    async def test_extract_satellite_info(self):
         """
         Test the extraction of Satellite Info
         """
@@ -110,10 +110,10 @@ class TestDatabase:
             ]
         )
         # Try to extract satellites info from the db
-        satellites_info = await DataBase.extract_satellites_info([satellite])
+        satellites_info = await DataBase.extract_satellites_info(satellite)
 
-        assert raw_data == satellites_info[0].info[0].raw_data, "Raw Data must be equal"
-        assert satellites_info[0].info[1].raw_data is None, "Raw Data must be None"
+        assert raw_data == satellites_info.info[0].raw_data, "Raw Data must be equal"
+        assert satellites_info.info[1].raw_data is None, "Raw Data must be None"
 
         # Disconnect from the Database
         await DataBase.disconnect()
