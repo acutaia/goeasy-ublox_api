@@ -29,9 +29,9 @@ from fastapi.testclient import TestClient
 import ujson
 
 # Internal
-from .postgresql import raw_svId, timestampMessage_unix, raw_data
+from .postgresql import raw_svId, timestampMessage_unix, raw_data, galileo_data
 from .security import INVALID_TOKEN, configure_security_for_testing, get_valid_token
-from app.main import app, RawData, SatelliteInfo
+from app.main import app, RawData, GalileoData, SatelliteInfo, GalileoInfo
 
 # ------------------------------------------------------------------------------
 
@@ -98,6 +98,41 @@ def test_raw_data():
         assert response.json() == {
             "timestamp": timestampMessage_unix,
             "raw_data": raw_data
+        }, "Error during the extraction of data from the database"
+
+
+def test_galileo_data():
+    """
+    Test the endpoint used to get the galileo_data"
+    """
+
+    with TestClient(app=app) as client:
+        # Try to get info without a Token
+        response = client.get(
+            url=f"/api/v1/galileo/request/galileo/{raw_svId}/{timestampMessage_unix}"
+        )
+        assert response.status_code == status.HTTP_403_FORBIDDEN, "Authentication is based on JWT"
+
+        # Try to get info with an invalid Token
+        response = client.get(
+            url=f"/api/v1/galileo/request/galileo/{raw_svId}/{timestampMessage_unix}",
+            headers={
+                "Authorization": f"Bearer {INVALID_TOKEN}"
+            }
+        )
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED, "Token not Valid"
+
+        # Obtain a valid Token and try to get info
+        valid_token = get_valid_token()
+        response = client.get(
+            url=f"/api/v1/galileo/request/galileo/{raw_svId}/{timestampMessage_unix}",
+            headers={"Authorization": f"Bearer {valid_token}"
+                     }
+        )
+        assert response.status_code == 200, "The token must be valid"
+        assert response.json() == {
+            "timestamp": timestampMessage_unix,
+            "raw_data": galileo_data
         }, "Error during the extraction of data from the database"
 
 
@@ -170,6 +205,80 @@ def test_satellite_info():
                 RawData(
                     timestamp=timestampMessage_unix,
                     raw_data=raw_data
+                )
+            ]
+        ).dict(), "Error during the extraction of data from the database"
+
+
+def test_galileo_info():
+    """
+    Test the endpoint that gives the galileo info for a list of timestamps
+    """
+    with TestClient(app=app) as client:
+        # Try to get info without a Token
+        response = client.post(
+            url=f"/api/v1/galileo/request/galileo",
+            data=ujson.dumps(
+                {
+                    "satellite_id": raw_svId,
+                    "info": [
+                        {
+                            "timestamp": timestampMessage_unix
+                        }
+                    ]
+                }
+            )
+        )
+
+        assert response.status_code == status.HTTP_403_FORBIDDEN, "Authentication is based on JWT"
+
+        # Try to get info with an invalid Token
+        response = client.post(
+            url=f"/api/v1/galileo/request/galileo",
+            data=ujson.dumps(
+                [
+                    {
+                        "satellite_id": raw_svId,
+                        "info": [
+                            {
+                                "timestamp": timestampMessage_unix
+                            }
+                        ]
+                    }
+                ]
+            ),
+            headers={
+                "Authorization": f"Bearer {INVALID_TOKEN}"
+            }
+        )
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED, "Token not Valid"
+
+        # Obtain a valid Token and try to get info
+        valid_token = get_valid_token()
+        response = client.post(
+            url=f"/api/v1/galileo/request/galileo",
+            data=ujson.dumps(
+                {
+                    "satellite_id": raw_svId,
+                    "info": [
+                        {
+                            "timestamp": timestampMessage_unix
+                        }
+                    ]
+                }
+            ),
+            headers={
+                "Authorization": f"Bearer {valid_token}"
+            }
+        )
+        assert response.status_code == 200, "The token must be valid"
+
+        assert response.json() == GalileoInfo(
+            satellite_id=raw_svId,
+            info=[
+                GalileoData(
+                    timestamp=timestampMessage_unix,
+                    raw_data=galileo_data
                 )
             ]
         ).dict(), "Error during the extraction of data from the database"

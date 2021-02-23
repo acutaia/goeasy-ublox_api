@@ -31,7 +31,7 @@ from fastapi.openapi.docs import get_redoc_html
 from fastapi.staticfiles import StaticFiles
 
 # Internal
-from .models.satellite import RawData, Satellite, SatelliteInfo
+from .models.satellite import RawData, GalileoData, Satellite, SatelliteInfo, Galileo, GalileoInfo
 from .db.postgresql import DataBase
 from .security.jwt_bearer import Signature
 
@@ -69,7 +69,7 @@ async def custom_redoc_ui_html():
     response_model=RawData,
     summary="Extract Raw Data",
     response_description="Raw Data",
-    tags=["Galileo"],
+    tags=["Ublox"],
     dependencies=[Depends(auth)]
 )
 async def raw_data(
@@ -86,24 +86,67 @@ async def raw_data(
     return await database.extract_raw_data(satellite_id, timestamp)
 
 
+@app.get(
+    "/api/v1/galileo/request/galileo/{satellite_id}/{timestamp}",
+    response_class=UJSONResponse,
+    response_model=GalileoData,
+    summary="Extract Galileo Data",
+    response_description="Galileo Data",
+    tags=["Galileo"],
+    dependencies=[Depends(auth)]
+)
+async def galileo_data(
+    satellite_id: int = Path(..., description="Id of the Satellite", example=36),
+    timestamp: int = Path(..., description="Timestamp in ms of the data to retrieve", example=1613406498000)
+):
+    """
+    Extract the Galileo Data of a satellite in a specific timestamp
+
+    - **satellite_id**: identification code of the satellite
+    - **timestamp**: requested timestamp in ms
+    - **raw_data**: data sent by the satellite in that timestamp
+    """
+    return await database.extract_galileo_data(satellite_id, timestamp)
+
+
 @app.post(
     "/api/v1/galileo/request",
     response_class=UJSONResponse,
     response_model=SatelliteInfo,
-    summary="Extract Satellites Info",
-    response_description="The raw data of the satellites in the specified timestamps",
-    tags=["Galileo"],
+    summary="Extract Satellite Info",
+    response_description="The raw data of the satellite in the specified timestamps",
+    tags=["Ublox"],
     dependencies=[Depends(auth)]
 )
-async def satellites_info(satellite: Satellite = Body(...)):
+async def satellite_info(satellite: Satellite = Body(...)):
     """
-    Extract the RaW Data of a satellites list in a specific timestamp
+    Extract the RaW Data of a satellite in a list of specific timestamps
 
     - **satellite_id**: identification code of the satellite
     - **info**: list of requested timestamp in ms
     - **raw_data**: data sent by the satellite in that timestamp
     """
-    return await database.extract_satellites_info(satellite)
+    return await database.extract_satellite_info(satellite)
+
+
+@app.post(
+    "/api/v1/galileo/request/galileo",
+    response_class=UJSONResponse,
+    response_model=GalileoInfo,
+    summary="Extract Galileo Info",
+    response_description="The galileo data of the satellite in the specified timestamps",
+    tags=["Galileo"],
+    dependencies=[Depends(auth)]
+)
+async def galileo_info(satellite: Galileo = Body(...)):
+    """
+    Extract the Galileo Data of a satellite in a list of specific timestamps
+
+    - **satellite_id**: identification code of the satellite
+    - **info**: list of requested timestamp in ms
+    - **raw_data**: data sent by the satellite in that timestamp
+    """
+    return await database.extract_galileo_info(satellite)
 
 
 def custom_openapi():

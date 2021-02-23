@@ -45,6 +45,14 @@ class RawData(BaseModel):
     )
 
 
+class GalileoData(RawData):
+    """Model of Galielo Data of a Satellite"""
+    raw_data: Optional[str] = Field(
+        description="Galileo data in a specific timestamp",
+        example="077677340100635d242251f57f0f40a66540000000002aaaaa57d23fbf40"
+    )
+
+
 class Satellite(BaseModel):
     """Model of a Satellite"""
     satellite_id: int = Field(
@@ -70,6 +78,36 @@ class SatelliteInfo(Satellite):
             RawData(
                 timestamp=1613406498000,
                 raw_data="02132c000224010009080200afe20702188a1e3ce838b8d80000fa90004037842a000000f377aaaa00403fdabdaaaa2ac260"
+            )
+        ]
+    )
+
+
+class Galileo(Satellite):
+    """Model of a Galileo satellite """
+    satellite_id: int = Field(
+        ...,
+        description="id of the satellite",
+        example=36
+    )
+    info: List[GalileoData] = Field(
+        ...,
+        description="List of requested Galileo Data in specifics timestamps",
+        example=[
+            RawData(timestamp=1613406498000)
+        ]
+    )
+
+
+class GalileoInfo(Galileo):
+    """Class used only for documentation"""
+    info: List[GalileoData] = Field(
+        ...,
+        description="List of Galileo Data of in a specific timestamp",
+        example=[
+            GalileoData(
+                timestamp=1613406498000,
+                raw_data="077677340100635d242251f57f0f40a66540000000002aaaaa57d23fbf40"
             )
         ]
     )

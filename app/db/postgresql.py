@@ -24,7 +24,7 @@ from asyncpg import Connection, create_pool
 from asyncpg.pool import Pool
 from asyncpg.exceptions import UndefinedTableError
 # Internal
-from ..models.satellite import RawData, Satellite
+from ..models.satellite import RawData, GalileoData, Satellite, SatelliteInfo, Galileo, GalileoInfo
 from ..config import get_database_settings
 
 # -------------------------------------------
@@ -51,10 +51,10 @@ class DataBase:
         await cls.pool.close()
 
     @classmethod
-    async def extract_satellites_info(
+    async def extract_satellite_info(
             cls,
             satellite: Satellite
-    ) -> Satellite:
+    ) -> SatelliteInfo:
         """
         Extract all the raw data of the satellites list
         :param satellite: Satellite Id with the list of the timestamp of the data to retrieve
@@ -63,7 +63,8 @@ class DataBase:
         async with cls.pool.acquire() as conn:
             for raw_data in satellite.info:
                 raw_data.raw_data = await cls._extract_data(conn, satellite.satellite_id, raw_data.timestamp)
-        return satellite
+
+        return SatelliteInfo.construct(**satellite.dict())
 
     @classmethod
     async def extract_raw_data(
@@ -78,9 +79,11 @@ class DataBase:
         :return: Raw Data of the satellite in the required timestamp
         """
         async with cls.pool.acquire() as conn:
-            return RawData(
-                timestamp=timestamp,
-                raw_data=await cls._extract_data(conn, satellite_id, timestamp)
+            return RawData.construct(
+                **{
+                    "timestamp": timestamp,
+                    "raw_data": await cls._extract_data(conn, satellite_id, timestamp)
+                }
             )
 
     @classmethod
@@ -101,6 +104,68 @@ class DataBase:
             return await conn.fetchval(
                 f'SELECT raw_data '
                 f'FROM "{datetime.fromtimestamp(int(timestamp/1000)).year}_{cls.nation}_{satellite_id}" '
+                f'WHERE timestampmessage_unix '
+                f'BETWEEN {timestamp - 1000} AND {timestamp + 1000};'
+            )
+
+        except UndefinedTableError:
+            # No raw_data found
+            return None
+
+    @classmethod
+    async def extract_galileo_info(
+            cls,
+            satellite: Galileo
+    ) -> GalileoInfo:
+        """
+        Extract all the raw data of the satellites list
+        :param satellite: Satellite Id with the list of the timestamp of the data to retrieve
+        :return: The info required for a specific Satellite
+        """
+        async with cls.pool.acquire() as conn:
+            for raw_data in satellite.info:
+                raw_data.raw_data = await cls._extract_galileo_data(conn, satellite.satellite_id, raw_data.timestamp)
+
+        return GalileoInfo.construct(**satellite.dict())
+
+    @classmethod
+    async def extract_galileo_data(
+            cls,
+            satellite_id: int,
+            timestamp: int
+    ) -> RawData:
+        """
+         Extract Raw data of the Satellite in a specific timestamp
+        :param satellite_id: Satellite id
+        :param timestamp: Timestamp of the raw data to retrieve
+        :return: Galileo Data of the satellite in the required timestamp
+        """
+        async with cls.pool.acquire() as conn:
+            return GalileoData.construct(
+                **{
+                    "timestamp": timestamp,
+                    "raw_data": await cls._extract_galileo_data(conn, satellite_id, timestamp)
+                }
+            )
+
+    @classmethod
+    async def _extract_galileo_data(
+            cls,
+            conn: Connection,
+            satellite_id: int,
+            timestamp: int
+    ) -> Optional[str]:
+        """
+        Utility function to extract data from the database
+        :param conn: A connection to the database
+        :param satellite_id: Id of the satellite
+        :param timestamp: Of the data to retrieve
+        :return: The Galileo Data of the Satellite in the specified timestamp
+        """
+        try:
+            return await conn.fetchval(
+                f'SELECT galileo_data '
+                f'FROM "{datetime.fromtimestamp(int(timestamp / 1000)).year}_{cls.nation}_{satellite_id}" '
                 f'WHERE timestampmessage_unix '
                 f'BETWEEN {timestamp - 1000} AND {timestamp + 1000};'
             )

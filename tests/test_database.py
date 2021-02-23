@@ -28,11 +28,11 @@ import uvloop
 import pytest
 
 # DataBase
-from .postgresql import FakeDatabase, raw_data, timestampMessage_unix, raw_svId
+from .postgresql import FakeDatabase, raw_data, timestampMessage_unix, raw_svId, galileo_data
 from app.db.postgresql import DataBase
 
 # Satellites
-from app.models.satellite import Satellite, RawData
+from app.models.satellite import Satellite, RawData, Galileo, GalileoData
 
 # ------------------------------------------------------------------------------
 
@@ -88,6 +88,30 @@ class TestDatabase:
         await DataBase.disconnect()
 
     @pytest.mark.asyncio
+    async def test_extract_galileo_data(self):
+        """
+        Test the extraction of galileo_data from the database
+        """
+
+        # Setup the Database
+        await FakeDatabase.create_database()
+        # Connect to the Database
+        await DataBase.connect()
+
+        # Try to extract data that are inside in the db
+        data = await DataBase.extract_galileo_data(raw_svId, timestampMessage_unix)
+        assert raw_data == data.raw_data, "Galileo Data should be equal"
+
+        # Try to extract data that aren't inside the db
+        data = await DataBase.extract_galileo_data(raw_svId, timestampMessage_unix + 4000)
+        assert data.raw_data is None, "Galileo Data should be none"
+        data = await DataBase.extract_galileo_data(raw_svId + 1, timestampMessage_unix)
+        assert data.raw_data is None, "Galileo Data should be none"
+
+        # Disconnect from the Database
+        await DataBase.disconnect()
+
+    @pytest.mark.asyncio
     async def test_extract_satellite_info(self):
         """
         Test the extraction of Satellite Info
@@ -106,14 +130,48 @@ class TestDatabase:
                     timestamp=timestampMessage_unix
                 ),
                 RawData(
-                    timestamp=timestampMessage_unix+4000)
+                    timestamp=timestampMessage_unix+4000
+                )
             ]
         )
         # Try to extract satellites info from the db
-        satellites_info = await DataBase.extract_satellites_info(satellite)
+        satellite_info = await DataBase.extract_satellite_info(satellite)
 
-        assert raw_data == satellites_info.info[0].raw_data, "Raw Data must be equal"
-        assert satellites_info.info[1].raw_data is None, "Raw Data must be None"
+        assert raw_data == satellite_info.info[0].raw_data, "Raw Data must be equal"
+        assert satellite_info.info[1].raw_data is None, "Raw Data must be None"
 
         # Disconnect from the Database
         await DataBase.disconnect()
+
+    @pytest.mark.asyncio
+    async def test_extract_galileo_info(self):
+        """
+        Test the extraction of Galileo Info
+        """
+
+        # Setup the Database
+        await FakeDatabase.create_database()
+        # Connect to the Database
+        await DataBase.connect()
+
+        # Fake satellite requested raw_data
+        satellite = Galileo(
+            satellite_id=raw_svId,
+            info=[
+                GalileoData(
+                    timestamp=timestampMessage_unix
+                ),
+                GalileoData(
+                    timestamp=timestampMessage_unix + 4000
+                )
+            ]
+        )
+        # Try to extract satellites info from the db
+        galileo_info = await DataBase.extract_galileo_info(satellite)
+
+        assert raw_data == galileo_info.info[0].raw_data, "Raw Data must be equal"
+        assert galileo_info.info[1].raw_data is None, "Raw Data must be None"
+
+        # Disconnect from the Database
+        await DataBase.disconnect()
+
