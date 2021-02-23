@@ -28,6 +28,7 @@ from typing import Optional, List
 
 # Third Party
 from pydantic import BaseModel, Field
+import ujson
 
 # --------------------------------------------------------------------------------------------
 
@@ -43,6 +44,11 @@ class RawData(BaseModel):
         description="Data of the Satellite in a specific timestamp",
         example="02132c000224010009080200afe20702188a1e3ce838b8d80000fa90004037842a000000f377aaaa00403fdabdaaaa2ac260"
     )
+
+    class Config:
+        """With this configuration we use ujson to improve performance"""
+        json_loads = ujson.loads
+        json_dumps = ujson.dumps
 
 
 class GalileoData(RawData):
@@ -67,6 +73,11 @@ class Satellite(BaseModel):
             RawData(timestamp=1613406498000)
         ]
     )
+
+    class Config:
+        """With this configuration we use ujson to improve performance"""
+        json_loads = ujson.loads
+        json_dumps = ujson.dumps
 
 
 class SatelliteInfo(Satellite):
