@@ -46,7 +46,7 @@ class RawData(BaseModel):
 
 
 class GalileoData(RawData):
-    """Model of Galielo Data of a Satellite"""
+    """Model of Galileo Data of a Satellite"""
     raw_data: Optional[str] = Field(
         description="Galileo data in a specific timestamp",
         example="077677340100635d242251f57f0f40a66540000000002aaaaa57d23fbf40"
@@ -85,16 +85,11 @@ class SatelliteInfo(Satellite):
 
 class Galileo(Satellite):
     """Model of a Galileo satellite """
-    satellite_id: int = Field(
-        ...,
-        description="id of the satellite",
-        example=36
-    )
     info: List[GalileoData] = Field(
         ...,
         description="List of requested Galileo Data in specifics timestamps",
         example=[
-            RawData(timestamp=1613406498000)
+            GalileoData(timestamp=1613406498000)
         ]
     )
 

@@ -64,7 +64,12 @@ class DataBase:
             for raw_data in satellite.info:
                 raw_data.raw_data = await cls._extract_data(conn, satellite.satellite_id, raw_data.timestamp)
 
-        return SatelliteInfo.construct(**satellite.dict())
+        return SatelliteInfo.construct(
+            **{
+                "satellite_id": satellite.satellite_id,
+                "info": satellite.info
+            }
+        )
 
     @classmethod
     async def extract_raw_data(
@@ -126,7 +131,12 @@ class DataBase:
             for raw_data in satellite.info:
                 raw_data.raw_data = await cls._extract_galileo_data(conn, satellite.satellite_id, raw_data.timestamp)
 
-        return GalileoInfo.construct(**satellite.dict())
+        return GalileoInfo.construct(
+            **{
+                "satellite_id": satellite.satellite_id,
+                "info": satellite.info
+            }
+        )
 
     @classmethod
     async def extract_galileo_data(

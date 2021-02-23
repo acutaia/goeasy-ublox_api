@@ -127,10 +127,12 @@ class TestDatabase:
             satellite_id=raw_svId,
             info=[
                 RawData(
-                    timestamp=timestampMessage_unix
+                    timestamp=timestampMessage_unix,
+                    raw_data=None
                 ),
                 RawData(
-                    timestamp=timestampMessage_unix+4000
+                    timestamp=timestampMessage_unix+4000,
+                    raw_data=None
                 )
             ]
         )
@@ -159,10 +161,12 @@ class TestDatabase:
             satellite_id=raw_svId,
             info=[
                 GalileoData(
-                    timestamp=timestampMessage_unix
+                    timestamp=timestampMessage_unix,
+                    raw_data=None
                 ),
                 GalileoData(
-                    timestamp=timestampMessage_unix + 4000
+                    timestamp=timestampMessage_unix + 4000,
+                    raw_data=None
                 )
             ]
         )
