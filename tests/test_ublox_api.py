@@ -26,7 +26,6 @@ App Tests
 # Third party
 from fastapi import status
 from fastapi.testclient import TestClient
-import ujson
 
 # Internal
 from .postgresql import raw_svId, timestampMessage_unix, raw_data, galileo_data
@@ -91,8 +90,9 @@ def test_raw_data():
         valid_token = get_valid_token()
         response = client.get(
             url=f"/api/v1/galileo/request/{raw_svId}/{timestampMessage_unix}",
-            headers={"Authorization": f"Bearer {valid_token}"
-                     }
+            headers={
+                "Authorization": f"Bearer {valid_token}"
+                }
         )
         assert response.status_code == 200, "The token must be valid"
         assert response.json() == {
@@ -126,8 +126,9 @@ def test_galileo_data():
         valid_token = get_valid_token()
         response = client.get(
             url=f"/api/v1/galileo/request/galileo/{raw_svId}/{timestampMessage_unix}",
-            headers={"Authorization": f"Bearer {valid_token}"
-                     }
+            headers={
+                "Authorization": f"Bearer {valid_token}"
+                }
         )
         assert response.status_code == 200, "The token must be valid"
         assert response.json() == {
@@ -176,7 +177,8 @@ def test_satellite_info():
                 }
             ).json(),
             headers={
-                "Authorization": f"Bearer {INVALID_TOKEN}"
+                "Authorization": f"Bearer {INVALID_TOKEN}",
+                "Content-Type": "application/json"
             }
         )
         assert response.status_code == status.HTTP_401_UNAUTHORIZED, "Token not Valid"
@@ -198,7 +200,8 @@ def test_satellite_info():
                 }
             ).json(),
             headers={
-                "Authorization": f"Bearer {valid_token}"
+                "Authorization": f"Bearer {valid_token}",
+                "Content-Type": "application/json"
             }
         )
         assert response.status_code == 200, "The token must be valid"
@@ -254,7 +257,8 @@ def test_galileo_info():
                 }
             ).json(),
             headers={
-                "Authorization": f"Bearer {INVALID_TOKEN}"
+                "Authorization": f"Bearer {INVALID_TOKEN}",
+                "Content-Type": "application/json"
             }
         )
         assert response.status_code == status.HTTP_401_UNAUTHORIZED, "Token not Valid"
@@ -276,7 +280,8 @@ def test_galileo_info():
                 }
             ).json(),
             headers={
-                "Authorization": f"Bearer {valid_token}"
+                "Authorization": f"Bearer {valid_token}",
+                "Content-Type": "application/json"
             }
         )
         assert response.status_code == 200, "The token must be valid"
