@@ -145,7 +145,7 @@ def test_satellite_info():
         # Try to get info without a Token
         response = client.post(
             url=f"/api/v1/galileo/request",
-            data=SatelliteInfo.construct(
+            data=SatelliteInfo(
                 **{
                     "satellite_id": raw_svId,
                     "info": [
@@ -197,9 +197,11 @@ def test_satellite_info():
                         )
                     ]
                 }
-            ).json(),
+            ).dict(),
             headers={
                 "Authorization": f"Bearer {valid_token}",
+                "Content-Type": "application/json"
+
             }
         )
         assert response.status_code == 200, "The token must be valid"
@@ -253,9 +255,9 @@ def test_galileo_info():
                         )
                     ]
                 }
-            ).json(),
+            ).dict(),
             headers={
-                "Authorization": f"Bearer {INVALID_TOKEN}",
+                "Authorization": f"Bearer {INVALID_TOKEN}"
             }
         )
         assert response.status_code == status.HTTP_401_UNAUTHORIZED, "Token not Valid"
@@ -275,9 +277,10 @@ def test_galileo_info():
                         )
                     ]
                 }
-            ).json(),
+            ).dict(),
             headers={
                 "Authorization": f"Bearer {valid_token}",
+                "Content-Type": "application/json"
             }
         )
         assert response.status_code == 200, "The token must be valid"
