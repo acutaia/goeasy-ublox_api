@@ -156,7 +156,10 @@ def test_satellite_info():
                         )
                     ]
                 }
-            ).dict()
+            ).dict(),
+            headers={
+                "Content-Type": "application/json"
+            }
         )
 
         assert response.status_code == status.HTTP_403_FORBIDDEN, "Authentication is based on JWT"
@@ -177,7 +180,8 @@ def test_satellite_info():
                 }
             ).dict(),
             headers={
-                "Authorization": f"Bearer {INVALID_TOKEN}"
+                "Authorization": f"Bearer {INVALID_TOKEN}",
+                "Content-Type": "application/json"
             }
         )
         assert response.status_code == status.HTTP_401_UNAUTHORIZED, "Token not Valid"
@@ -236,7 +240,10 @@ def test_galileo_info():
                         )
                     ]
                 }
-            ).dict()
+            ).dict(),
+            headers={
+                "Content-Type": "application/json"
+            }
         )
 
         assert response.status_code == status.HTTP_403_FORBIDDEN, "Authentication is based on JWT"
@@ -257,7 +264,8 @@ def test_galileo_info():
                 }
             ).dict(),
             headers={
-                "Authorization": f"Bearer {INVALID_TOKEN}"
+                "Authorization": f"Bearer {INVALID_TOKEN}",
+                "Content-Type": "application/json"
             }
         )
         assert response.status_code == status.HTTP_401_UNAUTHORIZED, "Token not Valid"
