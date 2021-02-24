@@ -156,7 +156,7 @@ def test_satellite_info():
                         )
                     ]
                 }
-            ).json()
+            ).dict()
         )
 
         assert response.status_code == status.HTTP_403_FORBIDDEN, "Authentication is based on JWT"
@@ -175,7 +175,7 @@ def test_satellite_info():
                         )
                     ]
                 }
-            ).json(),
+            ).dict(),
             headers={
                 "Authorization": f"Bearer {INVALID_TOKEN}"
             }
@@ -236,7 +236,7 @@ def test_galileo_info():
                         )
                     ]
                 }
-            ).json()
+            ).dict()
         )
 
         assert response.status_code == status.HTTP_403_FORBIDDEN, "Authentication is based on JWT"
