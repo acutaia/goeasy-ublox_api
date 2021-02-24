@@ -26,6 +26,7 @@ App Tests
 # Third party
 from fastapi import status
 from fastapi.testclient import TestClient
+import ujson
 
 # Internal
 from .postgresql import raw_svId, timestampMessage_unix, raw_data, galileo_data
@@ -145,21 +146,16 @@ def test_satellite_info():
         # Try to get info without a Token
         response = client.post(
             url=f"/api/v1/galileo/request",
-            data=SatelliteInfo(
-                **{
+            data=ujson.dumps(
+                {
                     "satellite_id": raw_svId,
                     "info": [
-                        RawData.construct(
-                            **{
-                                "timestamp": timestampMessage_unix
-                            }
-                        )
+                        {
+                            "timestamp": timestampMessage_unix
+                        }
                     ]
                 }
-            ).dict(),
-            headers={
-                "Content-Type": "application/json"
-            }
+            )
         )
 
         assert response.status_code == status.HTTP_403_FORBIDDEN, "Authentication is based on JWT"
@@ -167,21 +163,18 @@ def test_satellite_info():
         # Try to get info with an invalid Token
         response = client.post(
             url=f"/api/v1/galileo/request",
-            data=SatelliteInfo.construct(
-                **{
+            data=ujson.dumps(
+                {
                     "satellite_id": raw_svId,
                     "info": [
-                        RawData.construct(
-                            **{
-                                "timestamp": timestampMessage_unix
-                            }
-                        )
+                        {
+                            "timestamp": timestampMessage_unix
+                        }
                     ]
                 }
-            ).dict(),
+            ),
             headers={
-                "Authorization": f"Bearer {INVALID_TOKEN}",
-                "Content-Type": "application/json"
+                "Authorization": f"Bearer {INVALID_TOKEN}"
             }
         )
         assert response.status_code == status.HTTP_401_UNAUTHORIZED, "Token not Valid"
@@ -190,22 +183,18 @@ def test_satellite_info():
         valid_token = get_valid_token()
         response = client.post(
             url=f"/api/v1/galileo/request",
-            data=SatelliteInfo.construct(
-                **{
+            data=ujson.dumps(
+                {
                     "satellite_id": raw_svId,
                     "info": [
-                        RawData.construct(
-                            **{
-                                "timestamp": timestampMessage_unix
-                            }
-                        )
+                        {
+                            "timestamp": timestampMessage_unix
+                        }
                     ]
                 }
-            ).dict(),
+            ),
             headers={
-                "Authorization": f"Bearer {valid_token}",
-                "Content-Type": "application/json"
-
+                "Authorization": f"Bearer {valid_token}"
             }
         )
         assert response.status_code == 200, "The token must be valid"
@@ -229,21 +218,16 @@ def test_galileo_info():
         # Try to get info without a Token
         response = client.post(
             url=f"/api/v1/galileo/request/galileo",
-            data=GalileoInfo.construct(
-                **{
+            data=ujson.dumps(
+                {
                     "satellite_id": raw_svId,
                     "info": [
-                        GalileoData.construct(
-                            **{
-                                "timestamp": timestampMessage_unix
-                            }
-                        )
+                        {
+                            "timestamp": timestampMessage_unix
+                        }
                     ]
                 }
-            ).dict(),
-            headers={
-                "Content-Type": "application/json"
-            }
+            )
         )
 
         assert response.status_code == status.HTTP_403_FORBIDDEN, "Authentication is based on JWT"
@@ -251,21 +235,18 @@ def test_galileo_info():
         # Try to get info with an invalid Token
         response = client.post(
             url=f"/api/v1/galileo/request/galileo",
-            data=GalileoInfo.construct(
-                **{
+            data=ujson.dumps(
+                {
                     "satellite_id": raw_svId,
                     "info": [
-                        GalileoData.construct(
-                            **{
-                                "timestamp": timestampMessage_unix
-                            }
-                        )
+                        {
+                            "timestamp": timestampMessage_unix
+                        }
                     ]
                 }
-            ).dict(),
+            ),
             headers={
                 "Authorization": f"Bearer {INVALID_TOKEN}",
-                "Content-Type": "application/json"
             }
         )
         assert response.status_code == status.HTTP_401_UNAUTHORIZED, "Token not Valid"
@@ -274,21 +255,18 @@ def test_galileo_info():
         valid_token = get_valid_token()
         response = client.post(
             url=f"/api/v1/galileo/request/galileo",
-            data=GalileoInfo.construct(
-                **{
+            data=ujson.dumps(
+                {
                     "satellite_id": raw_svId,
                     "info": [
-                        GalileoData.construct(
-                            **{
-                                "timestamp": timestampMessage_unix
-                            }
-                        )
+                        {
+                            "timestamp": timestampMessage_unix
+                        }
                     ]
                 }
-            ).dict(),
+            ),
             headers={
                 "Authorization": f"Bearer {valid_token}",
-                "Content-Type": "application/json"
             }
         )
         assert response.status_code == 200, "The token must be valid"
