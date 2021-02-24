@@ -144,16 +144,18 @@ def test_satellite_info():
         # Try to get info without a Token
         response = client.post(
             url=f"/api/v1/galileo/request",
-            data=ujson.dumps(
-                {
+            json=SatelliteInfo.construct(
+                **{
                     "satellite_id": raw_svId,
                     "info": [
-                        {
-                            "timestamp": timestampMessage_unix
-                        }
+                        RawData.construct(
+                            **{
+                                "timestamp": timestampMessage_unix
+                            }
+                        )
                     ]
                 }
-            )
+            ).json()
         )
 
         assert response.status_code == status.HTTP_403_FORBIDDEN, "Authentication is based on JWT"
@@ -161,18 +163,18 @@ def test_satellite_info():
         # Try to get info with an invalid Token
         response = client.post(
             url=f"/api/v1/galileo/request",
-            data=ujson.dumps(
-                [
-                    {
-                        "satellite_id": raw_svId,
-                        "info": [
-                            {
+            json=SatelliteInfo.construct(
+                **{
+                    "satellite_id": raw_svId,
+                    "info": [
+                        RawData.construct(
+                            **{
                                 "timestamp": timestampMessage_unix
                             }
-                        ]
-                    }
-                ]
-            ),
+                        )
+                    ]
+                }
+            ).json(),
             headers={
                 "Authorization": f"Bearer {INVALID_TOKEN}"
             }
@@ -183,16 +185,18 @@ def test_satellite_info():
         valid_token = get_valid_token()
         response = client.post(
             url=f"/api/v1/galileo/request",
-            data=ujson.dumps(
-                {
+            json=SatelliteInfo.construct(
+                **{
                     "satellite_id": raw_svId,
                     "info": [
-                        {
-                            "timestamp": timestampMessage_unix
-                        }
+                        RawData.construct(
+                            **{
+                                "timestamp": timestampMessage_unix
+                            }
+                        )
                     ]
                 }
-            ),
+            ).json(),
             headers={
                 "Authorization": f"Bearer {valid_token}"
             }
@@ -218,16 +222,18 @@ def test_galileo_info():
         # Try to get info without a Token
         response = client.post(
             url=f"/api/v1/galileo/request/galileo",
-            data=ujson.dumps(
-                {
+            json=GalileoInfo.construct(
+                **{
                     "satellite_id": raw_svId,
                     "info": [
-                        {
-                            "timestamp": timestampMessage_unix
-                        }
+                        GalileoData.construct(
+                            **{
+                                "timestamp": timestampMessage_unix
+                            }
+                        )
                     ]
                 }
-            )
+            ).json()
         )
 
         assert response.status_code == status.HTTP_403_FORBIDDEN, "Authentication is based on JWT"
@@ -235,18 +241,18 @@ def test_galileo_info():
         # Try to get info with an invalid Token
         response = client.post(
             url=f"/api/v1/galileo/request/galileo",
-            data=ujson.dumps(
-                [
-                    {
-                        "satellite_id": raw_svId,
-                        "info": [
-                            {
+            json=GalileoInfo.construct(
+                **{
+                    "satellite_id": raw_svId,
+                    "info": [
+                        GalileoData.construct(
+                            **{
                                 "timestamp": timestampMessage_unix
                             }
-                        ]
-                    }
-                ]
-            ),
+                        )
+                    ]
+                }
+            ).json(),
             headers={
                 "Authorization": f"Bearer {INVALID_TOKEN}"
             }
@@ -257,16 +263,18 @@ def test_galileo_info():
         valid_token = get_valid_token()
         response = client.post(
             url=f"/api/v1/galileo/request/galileo",
-            data=ujson.dumps(
-                {
+            json=GalileoInfo.construct(
+                **{
                     "satellite_id": raw_svId,
                     "info": [
-                        {
-                            "timestamp": timestampMessage_unix
-                        }
+                        GalileoData.construct(
+                            **{
+                                "timestamp": timestampMessage_unix
+                            }
+                        )
                     ]
                 }
-            ),
+            ).json(),
             headers={
                 "Authorization": f"Bearer {valid_token}"
             }
