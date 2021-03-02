@@ -40,7 +40,7 @@ database = get_database()
 
 # Instantiate router
 router = APIRouter(
-    prefix="/api/v1/galileo/request",
+    prefix="/api/v1/galileo",
     tags=["Ublox"]
 )
 
@@ -48,7 +48,7 @@ router = APIRouter(
 
 
 @router.post(
-    "/",
+    "/request/",
     response_class=UJSONResponse,
     response_model=SatelliteInfo,
     summary="Extract Ublox Info",
@@ -70,7 +70,7 @@ async def galileo_info(satellite: Satellite = Body(...)):
 
 
 @router.get(
-    "/{satellite_id}/{timestamp}",
+    "/request/{satellite_id}/{timestamp}",
     response_class=UJSONResponse,
     response_model=RawData,
     summary="Extract Ublox Data",

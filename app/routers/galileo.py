@@ -40,7 +40,7 @@ database = get_database()
 
 # Instantiate router
 router = APIRouter(
-    prefix="/api/v1/galileo/request/galileo",
+    prefix="/api/v1/galileo",
     tags=["Galileo"]
 )
 
@@ -48,7 +48,7 @@ router = APIRouter(
 
 
 @router.post(
-    "/",
+    "/request/galileo",
     response_class=UJSONResponse,
     response_model=GalileoInfo,
     summary="Extract Galileo Info",
@@ -70,7 +70,7 @@ async def galileo_info(satellite: Galileo = Body(...)):
 
 
 @router.get(
-    "/{satellite_id}/{timestamp}",
+    "/request/galileo/{satellite_id}/{timestamp}",
     response_class=UJSONResponse,
     response_model=GalileoData,
     summary="Extract Galileo Data",
