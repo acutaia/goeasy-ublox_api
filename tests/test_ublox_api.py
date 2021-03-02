@@ -281,8 +281,3 @@ def test_galileo_info():
                 )
             ]
         ).dict(), "Error during the extraction of data from the database"
-
-
-
-
-
