@@ -23,6 +23,9 @@ JWT_BEARER models package
     limitations under the License.
 """
 
+# Standard Library
+from functools import lru_cache
+
 # Third Party
 from fastapi import HTTPException, Request, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
@@ -55,4 +58,9 @@ class Signature(HTTPBearer):
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="invalid_bearer_token"
             )
+
+
+@lru_cache(maxsize=1)
+def get_signature() -> Signature:
+    return Signature()
 
