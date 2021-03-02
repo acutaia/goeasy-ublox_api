@@ -75,13 +75,13 @@ def test_raw_data():
     with TestClient(app=app) as client:
         # Try to get info without a Token
         response = client.get(
-            url=f"/api/v1/galileo/request/{raw_svId}/{timestampMessage_unix}"
+            f"/api/v1/galileo/ublox/request/{raw_svId}/{timestampMessage_unix}"
         )
         assert response.status_code == status.HTTP_403_FORBIDDEN, "Authentication is based on JWT"
 
         # Try to get info with an invalid Token
         response = client.get(
-            url=f"/api/v1/galileo/request/{raw_svId}/{timestampMessage_unix}",
+            f"/api/v1/galileo/ublox/request/{raw_svId}/{timestampMessage_unix}",
             headers={
                 "Authorization": f"Bearer {INVALID_TOKEN}"
             }
@@ -91,7 +91,7 @@ def test_raw_data():
         # Obtain a valid Token and try to get info
         valid_token = get_valid_token()
         response = client.get(
-            url=f"/api/v1/galileo/request/{raw_svId}/{timestampMessage_unix}",
+            f"/api/v1/galileo/ublox/request/{raw_svId}/{timestampMessage_unix}",
             headers={
                 "Authorization": f"Bearer {valid_token}"
                 }
@@ -111,13 +111,13 @@ def test_galileo_data():
     with TestClient(app=app) as client:
         # Try to get info without a Token
         response = client.get(
-            url=f"/api/v1/galileo/request/galileo/{raw_svId}/{timestampMessage_unix}"
+            f"/api/v1/galileo/request/{raw_svId}/{timestampMessage_unix}"
         )
         assert response.status_code == status.HTTP_403_FORBIDDEN, "Authentication is based on JWT"
 
         # Try to get info with an invalid Token
         response = client.get(
-            url=f"/api/v1/galileo/request/galileo/{raw_svId}/{timestampMessage_unix}",
+            f"/api/v1/galileo/request/{raw_svId}/{timestampMessage_unix}",
             headers={
                 "Authorization": f"Bearer {INVALID_TOKEN}"
             }
@@ -127,7 +127,7 @@ def test_galileo_data():
         # Obtain a valid Token and try to get info
         valid_token = get_valid_token()
         response = client.get(
-            url=f"/api/v1/galileo/request/galileo/{raw_svId}/{timestampMessage_unix}",
+            f"/api/v1/galileo/request/{raw_svId}/{timestampMessage_unix}",
             headers={
                 "Authorization": f"Bearer {valid_token}"
                 }
@@ -146,7 +146,7 @@ def test_satellite_info():
     with TestClient(app=app) as client:
         # Try to get info without a Token
         response = client.post(
-            url=f"/api/v1/galileo/request",
+            "/api/v1/galileo/ublox/request",
             data=ujson.dumps(
                 {
                     "satellite_id": raw_svId,
@@ -163,7 +163,7 @@ def test_satellite_info():
 
         # Try to get info with an invalid Token
         response = client.post(
-            url=f"/api/v1/galileo/request",
+            "/api/v1/galileo/ublox/request",
             data=ujson.dumps(
                 {
                     "satellite_id": raw_svId,
@@ -183,7 +183,7 @@ def test_satellite_info():
         # Obtain a valid Token and try to get info
         valid_token = get_valid_token()
         response = client.post(
-            url=f"/api/v1/galileo/request",
+            "/api/v1/galileo/ublox/request",
             data=ujson.dumps(
                 {
                     "satellite_id": raw_svId,
@@ -218,7 +218,7 @@ def test_galileo_info():
     with TestClient(app=app) as client:
         # Try to get info without a Token
         response = client.post(
-            url=f"/api/v1/galileo/request/galileo",
+            "/api/v1/galileo/request",
             data=ujson.dumps(
                 {
                     "satellite_id": raw_svId,
@@ -235,7 +235,7 @@ def test_galileo_info():
 
         # Try to get info with an invalid Token
         response = client.post(
-            url=f"/api/v1/galileo/request/galileo",
+            "/api/v1/galileo/request",
             data=ujson.dumps(
                 {
                     "satellite_id": raw_svId,
@@ -255,7 +255,7 @@ def test_galileo_info():
         # Obtain a valid Token and try to get info
         valid_token = get_valid_token()
         response = client.post(
-            url=f"/api/v1/galileo/request/galileo",
+            "/api/v1/galileo/request",
             data=ujson.dumps(
                 {
                     "satellite_id": raw_svId,

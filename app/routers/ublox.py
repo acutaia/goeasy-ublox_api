@@ -40,7 +40,7 @@ database = get_database()
 
 # Instantiate router
 router = APIRouter(
-    prefix="/api/v1/galileo",
+    prefix="/api/v1/galileo/ublox",
     tags=["Ublox"]
 )
 
@@ -48,7 +48,7 @@ router = APIRouter(
 
 
 @router.post(
-    "/request/",
+    "/request",
     response_class=UJSONResponse,
     response_model=SatelliteInfo,
     summary="Extract Ublox Info",
