@@ -3,12 +3,12 @@
 App main entry point
 
 :author: Angelo Cutaia
-:copyright: Copyright 2020, Angelo Cutaia
+:copyright: Copyright 2021, Angelo Cutaia
 :version: 1.0.0
 
 ..
 
-    Copyright 2020 Angelo Cutaia
+    Copyright 2021 Angelo Cutaia
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -41,16 +41,6 @@ auth = Signature()
 database = DataBase()
 app = FastAPI(docs_url=None, redoc_url=None)
 app.mount("/static", StaticFiles(directory="static"), name="static")
-
-
-@app.on_event("startup")
-async def startup():
-    await database.connect()
-
-
-@app.on_event("shutdown")
-async def shutdown():
-    await database.disconnect()
 
 
 @app.get("/api/v1/galileo/docs", include_in_schema=False)
