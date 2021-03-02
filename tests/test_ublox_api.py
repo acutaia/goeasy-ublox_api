@@ -31,7 +31,8 @@ import ujson
 # Internal
 from .postgresql import raw_svId, timestampMessage_unix, raw_data, galileo_data
 from .security import INVALID_TOKEN, configure_security_for_testing, get_valid_token
-from app.main import app, RawData, GalileoData, SatelliteInfo, GalileoInfo
+from app.main import app
+from app.models.satellite import RawData, GalileoData, SatelliteInfo, GalileoInfo
 
 # ------------------------------------------------------------------------------
 
