@@ -32,13 +32,14 @@ from fastapi.staticfiles import StaticFiles
 
 # Internal
 from .models.satellite import RawData, GalileoData, Satellite, SatelliteInfo, Galileo, GalileoInfo
-from .db.postgresql import DataBase
+from .db.postgresql import get_database
 from .security.jwt_bearer import Signature
 
 # --------------------------------------------------------------------------------------------
 
 auth = Signature()
-database = DataBase()
+database = get_database()
+
 app = FastAPI(docs_url=None, redoc_url=None)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 

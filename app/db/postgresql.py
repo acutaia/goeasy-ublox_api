@@ -16,9 +16,12 @@ Database utility functions
     See the License for the specific language governing permissions and
     limitations under the License.
 """
+
 # Standard library
 from datetime import datetime
+from functools import lru_cache
 from typing import Optional
+
 # Third party
 from asyncpg import Connection, create_pool
 from asyncpg.pool import Pool
@@ -27,7 +30,7 @@ from asyncpg.exceptions import UndefinedTableError
 from ..models.satellite import RawData, GalileoData, Satellite, SatelliteInfo, Galileo, GalileoInfo
 from ..config import get_database_settings
 
-# -------------------------------------------
+# ---------------------------------------------------------------------------------------
 
 
 class DataBase:
@@ -183,3 +186,10 @@ class DataBase:
         except UndefinedTableError:
             # No raw_data found
             return None
+
+
+@lru_cache(maxsize=1)
+def get_database() -> DataBase:
+    return DataBase()
+
+# ---------------------------------------------------------------------------------------
