@@ -53,7 +53,6 @@ router = APIRouter(
     response_model=GalileoInfo,
     summary="Extract Galileo Info",
     response_description="The galileo data of the satellite in the specified timestamps",
-    tags=["Galileo"],
     dependencies=[Depends(auth)]
 )
 async def galileo_info(satellite: Galileo = Body(...)):
@@ -75,7 +74,6 @@ async def galileo_info(satellite: Galileo = Body(...)):
     response_model=GalileoData,
     summary="Extract Galileo Data",
     response_description="Galileo Data",
-    tags=["Galileo"],
     dependencies=[Depends(auth)]
 )
 async def galileo_data(

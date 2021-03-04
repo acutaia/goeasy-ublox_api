@@ -53,12 +53,11 @@ router = APIRouter(
     response_model=SatelliteInfo,
     summary="Extract Ublox Info",
     response_description="The Ublox data of the satellite in the specified timestamps",
-    tags=["Ublox"],
     dependencies=[Depends(auth)]
 )
-async def galileo_info(satellite: Satellite = Body(...)):
+async def ublox_info(satellite: Satellite = Body(...)):
     """
-    Extract the Galileo Data of a satellite in a list of specific timestamps
+    Extract the Ublox Data of a satellite in a list of specific timestamps
 
     - **satellite_id**: identification code of the satellite
     - **info**: list of requested timestamp in ms
@@ -75,15 +74,14 @@ async def galileo_info(satellite: Satellite = Body(...)):
     response_model=RawData,
     summary="Extract Ublox Data",
     response_description="Ublox Data",
-    tags=["Ublox"],
     dependencies=[Depends(auth)]
 )
-async def galileo_data(
+async def ublox_data(
     satellite_id: int = Path(..., description="Id of the Satellite", example=36),
     timestamp: int = Path(..., description="Timestamp in ms of the data to retrieve", example=1613406498000)
 ):
     """
-    Extract the Galileo Data of a satellite in a specific timestamp
+    Extract the Ublox Data of a satellite in a specific timestamp
 
     - **satellite_id**: identification code of the satellite
     - **timestamp**: requested timestamp in ms
