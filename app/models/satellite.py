@@ -41,6 +41,7 @@ class RawData(BaseModel):
         example=1613406498000
     )
     raw_data: Optional[str] = Field(
+        default=None,
         description="Data of the Satellite in a specific timestamp",
         example="02132c000224010009080200afe20702188a1e3ce838b8d80000fa90004037842a000000f377aaaa00403fdabdaaaa2ac260"
     )
@@ -54,6 +55,7 @@ class RawData(BaseModel):
 class GalileoData(RawData):
     """Model of Galileo Data of a Satellite"""
     raw_data: Optional[str] = Field(
+        default=None,
         description="Galileo data in a specific timestamp",
         example="077677340100635d242251f57f0f40a66540000000002aaaaa57d23fbf40"
     )

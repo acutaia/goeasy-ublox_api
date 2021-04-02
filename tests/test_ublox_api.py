@@ -150,8 +150,7 @@ def test_satellite_info():
                     "satellite_id": raw_svId,
                     "info": [
                         {
-                            "timestamp": timestampMessage_unix,
-                            "raw_data": None
+                            "timestamp": timestampMessage_unix
                         }
                     ]
             }
@@ -166,8 +165,7 @@ def test_satellite_info():
                     "satellite_id": raw_svId,
                     "info": [
                         {
-                            "timestamp": timestampMessage_unix,
-                            "raw_data": None
+                            "timestamp": timestampMessage_unix
                         }
                     ]
             },
@@ -185,8 +183,7 @@ def test_satellite_info():
                     "satellite_id": raw_svId,
                     "info": [
                         {
-                            "timestamp": timestampMessage_unix,
-                            "raw_data": None
+                            "timestamp": timestampMessage_unix
                         }
                     ]
             },
@@ -219,8 +216,7 @@ def test_galileo_info():
                     "satellite_id": raw_svId,
                     "info": [
                         {
-                            "timestamp": timestampMessage_unix,
-                            "raw_data": None
+                            "timestamp": timestampMessage_unix
                         }
                     ]
             }
@@ -235,8 +231,7 @@ def test_galileo_info():
                 "satellite_id": raw_svId,
                 "info": [
                     {
-                        "timestamp": timestampMessage_unix,
-                        "raw_data": None
+                        "timestamp": timestampMessage_unix
                     }
                 ]
             },
@@ -254,8 +249,7 @@ def test_galileo_info():
                 "satellite_id": raw_svId,
                 "info": [
                     {
-                        "timestamp": timestampMessage_unix,
-                        "raw_data": None
+                        "timestamp": timestampMessage_unix
                     }
                 ]
             },

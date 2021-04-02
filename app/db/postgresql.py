@@ -57,7 +57,7 @@ class DataBase:
     async def extract_satellite_info(
             cls,
             satellite: Satellite
-    ) -> SatelliteInfo:
+    ) -> dict:
         """
         Extract all the raw data of the satellites list
         :param satellite: Satellite Id with the list of the timestamp of the data to retrieve
@@ -67,19 +67,17 @@ class DataBase:
             for raw_data in satellite.info:
                 raw_data.raw_data = await cls._extract_data(conn, satellite.satellite_id, raw_data.timestamp)
 
-        return SatelliteInfo.construct(
-            **{
+        return {
                 "satellite_id": satellite.satellite_id,
                 "info": satellite.info
             }
-        )
 
     @classmethod
     async def extract_raw_data(
             cls,
             satellite_id: int,
             timestamp: int
-    ) -> RawData:
+    ) -> dict:
         """
          Extract Raw data of the Satellite in a specific timestamp
         :param satellite_id: Satellite id
@@ -87,12 +85,10 @@ class DataBase:
         :return: Raw Data of the satellite in the required timestamp
         """
         async with cls.pool.acquire() as conn:
-            return RawData.construct(
-                **{
+            return {
                     "timestamp": timestamp,
                     "raw_data": await cls._extract_data(conn, satellite_id, timestamp)
                 }
-            )
 
     @classmethod
     async def _extract_data(
@@ -124,7 +120,7 @@ class DataBase:
     async def extract_galileo_info(
             cls,
             satellite: Galileo
-    ) -> GalileoInfo:
+    ) -> dict:
         """
         Extract all the raw data of the satellites list
         :param satellite: Satellite Id with the list of the timestamp of the data to retrieve
@@ -134,19 +130,17 @@ class DataBase:
             for raw_data in satellite.info:
                 raw_data.raw_data = await cls._extract_galileo_data(conn, satellite.satellite_id, raw_data.timestamp)
 
-        return GalileoInfo.construct(
-            **{
+        return {
                 "satellite_id": satellite.satellite_id,
                 "info": satellite.info
             }
-        )
 
     @classmethod
     async def extract_galileo_data(
             cls,
             satellite_id: int,
             timestamp: int
-    ) -> RawData:
+    ) -> dict:
         """
          Extract Raw data of the Satellite in a specific timestamp
         :param satellite_id: Satellite id
@@ -154,12 +148,10 @@ class DataBase:
         :return: Galileo Data of the satellite in the required timestamp
         """
         async with cls.pool.acquire() as conn:
-            return GalileoData.construct(
-                **{
+            return {
                     "timestamp": timestamp,
                     "raw_data": await cls._extract_galileo_data(conn, satellite_id, timestamp)
                 }
-            )
 
     @classmethod
     async def _extract_galileo_data(
