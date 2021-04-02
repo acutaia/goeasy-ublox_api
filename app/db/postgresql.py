@@ -110,7 +110,7 @@ class DataBase:
         """
         try:
             return await conn.fetchval(
-                f'SELECT raw_data '
+                f"SELECT (CASE WHEN osnma = 0 THEN 'AttackOnReferenceSystem' ELSE raw_data END)"
                 f'FROM "{datetime.fromtimestamp(int(timestamp/1000)).year}_{cls.nation}_{satellite_id}" '
                 f'WHERE timestampmessage_unix '
                 f'BETWEEN {timestamp - 1000} AND {timestamp + 1000};'
@@ -177,7 +177,7 @@ class DataBase:
         """
         try:
             return await conn.fetchval(
-                f'SELECT galileo_data '
+                f"SELECT (CASE WHEN osnma = 0 THEN 'AttackOnReferenceSystem' ELSE galileo_data END)"
                 f'FROM "{datetime.fromtimestamp(int(timestamp / 1000)).year}_{cls.nation}_{satellite_id}" '
                 f'WHERE timestampmessage_unix '
                 f'BETWEEN {timestamp - 1000} AND {timestamp + 1000};'
