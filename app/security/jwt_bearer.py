@@ -1,6 +1,6 @@
 """
-JWT_BEARER models package
 
+JWT_BEARER models package
 :author: Angelo Cutaia
 :copyright: Copyright 2021, Angelo Cutaia
 :version: 1.0.0
