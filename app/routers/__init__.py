@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Routers Package.
 
 :author: Angelo Cutaia

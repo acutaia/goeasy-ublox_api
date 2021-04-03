@@ -1,5 +1,4 @@
-#!/usr/bin/env python3
-"""App Settings.
+"""App Settings
 
 :author: Angelo Cutaia
 :copyright: Copyright 2021, Angelo Cutaia

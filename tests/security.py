@@ -1,5 +1,4 @@
-#!/usr/bin/env python3
-"""Security Utilities for testing.
+"""Security Utilities for testing
 
 :author: Angelo Cutaia
 :copyright: Copyright 2021, Angelo Cutaia

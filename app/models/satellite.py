@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Satellite models package.
 
 :author: Angelo Cutaia
@@ -33,6 +32,7 @@ import ujson
 
 
 class RawData(BaseModel):
+
     """Model of Raw Data of a Satellite."""
 
     timestamp: int = Field(

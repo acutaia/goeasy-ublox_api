@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
-"""Models package.
+"""
+Models package
 
 :author: Angelo Cutaia
 :copyright: Copyright 2021, Angelo Cutaia

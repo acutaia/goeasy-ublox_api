@@ -1,5 +1,4 @@
-#!/usr/bin/env python3
-"""App Tests.
+"""App Tests
 
 :author: Angelo Cutaia
 :copyright: Copyright 2021, Angelo Cutaia

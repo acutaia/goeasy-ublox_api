@@ -1,5 +1,4 @@
-#!/usr/bin/env python3
-"""Test package for ublox_api.
+"""Test package for ublox_api
 
 :author: Angelo Cutaia
 :copyright: Copyright 2021, Angelo Cutaia
