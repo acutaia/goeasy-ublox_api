@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """JWT_BEARER  package.
 
 :author: Angelo Cutaia

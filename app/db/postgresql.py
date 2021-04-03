@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Database utility functions.
 
 :author: Angelo Cutaia

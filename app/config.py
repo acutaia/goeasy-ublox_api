@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """App Settings.
 
 :author: Angelo Cutaia
@@ -39,7 +40,9 @@ class DataBaseSettings(BaseSettings):
     nation: str
 
     class Config:
+
         """Location of the settings file."""
+
         env_file = ".env"
 
 
@@ -59,7 +62,9 @@ class SecuritySettings(BaseSettings):
     realm_access: List[str]
 
     class Config:
+
         """Location of the settings file."""
+
         env_file = ".env"
 
 

@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Test package for ublox_api.
 
 :author: Angelo Cutaia
