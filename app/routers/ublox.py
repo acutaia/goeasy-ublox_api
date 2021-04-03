@@ -1,6 +1,5 @@
-"""
+"""Ublox Router.
 
-Ublox Router
 :author: Angelo Cutaia
 :copyright: Copyright 2021, Angelo Cutaia
 :version: 1.0.0
@@ -52,7 +51,8 @@ router = APIRouter(prefix="/api/v1/galileo/ublox", tags=["Ublox"])
     dependencies=[Depends(auth)],
 )
 async def ublox_info(satellite: Satellite = Body(...)):
-    """Extract the Ublox Data of a satellite in a list of specific timestamps
+
+    """Extract the Ublox Data of a satellite in a list of specific timestamps.
 
     - **satellite_id**: identification code of the satellite
     - **info**: list of requested timestamp in ms
@@ -80,7 +80,8 @@ async def ublox_data(
         example=1613406498000,
     ),
 ):
-    """Extract the Ublox Data of a satellite in a specific timestamp
+
+    """Extract the Ublox Data of a satellite in a specific timestamp.
 
     - **satellite_id**: identification code of the satellite
     - **timestamp**: requested timestamp in ms

@@ -1,6 +1,5 @@
-"""
+"""App Settings.
 
-App Settings
 :author: Angelo Cutaia
 :copyright: Copyright 2021, Angelo Cutaia
 :version: 1.0.0
@@ -40,6 +39,7 @@ class DataBaseSettings(BaseSettings):
     nation: str
 
     class Config:
+        """Location of the settings file."""
         env_file = ".env"
 
 
@@ -59,6 +59,7 @@ class SecuritySettings(BaseSettings):
     realm_access: List[str]
 
     class Config:
+        """Location of the settings file."""
         env_file = ".env"
 
 

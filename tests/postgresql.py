@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Asynchronous database
+"""Asynchronous database.
 
 :author: Angelo Cutaia
 :copyright: Copyright 2021, Angelo Cutaia
@@ -191,10 +190,10 @@ DATA_TO_STORE = (
 
 
 class FakeDatabase:
-    """
-    A class that handles a test database.
-    The scope of this class is to build the database and save data inside it
-    using a connection pool
+    """A class that handles a test database.
+
+    The scope of this class is to build the database and save data
+    inside it using a connection pool
     """
 
     settings = get_database_settings()
@@ -205,9 +204,7 @@ class FakeDatabase:
 
     @classmethod
     async def create_database(cls) -> None:
-        """
-        Create a test database.
-        """
+        """Create a test database."""
         try:
             # create a connection pool
             cls.pool = await asyncpg.create_pool(
@@ -243,12 +240,11 @@ class FakeDatabase:
 
     @classmethod
     async def store_data(cls, data_to_store: tuple) -> None:
-        """
-        Use a connection from the pool to insert the data in the db
-        and check if the insertion is successful then release the
-        connection. If the table in which the data must be stored doesn't
-        exist, it will create it. In case all the connections in the pool are busy,
-        await for a connection to be free.
+        """Use a connection from the pool to insert the data in the db and
+        check if the insertion is successful then release the connection. If
+        the table in which the data must be stored doesn't exist, it will
+        create it. In case all the connections in the pool are busy, await for
+        a connection to be free.
 
         :param data_to_store:
         :return:

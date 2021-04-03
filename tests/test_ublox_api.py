@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-App Tests
+"""App Tests.
 
 :author: Angelo Cutaia
 :copyright: Copyright 2021, Angelo Cutaia
@@ -51,9 +50,7 @@ configure_security_for_testing()
 
 
 def test_docs():
-    """
-    Test the documentation of ublox_api
-    """
+    """Test the documentation of ublox_api."""
 
     # Load the cache of the documentation
     app.openapi_schema = None
@@ -67,9 +64,7 @@ def test_docs():
 
 
 def test_raw_data():
-    """
-    Test the endpoint used to get the raw_data"
-    """
+    """Test the endpoint used to get the raw_data"."""
 
     with TestClient(app=app) as client:
         # Try to get info without a Token
@@ -101,9 +96,7 @@ def test_raw_data():
 
 
 def test_galileo_data():
-    """
-    Test the endpoint used to get the galileo_data"
-    """
+    """Test the endpoint used to get the galileo_data"."""
 
     with TestClient(app=app) as client:
         # Try to get info without a Token
@@ -135,9 +128,8 @@ def test_galileo_data():
 
 
 def test_satellite_info():
-    """
-    Test the endpoint that gives the satellite info for a list of timestamps
-    """
+    """Test the endpoint that gives the satellite info for a list of
+    timestamps."""
     with TestClient(app=app) as client:
         # Try to get info without a Token
         response = client.post(
@@ -185,9 +177,8 @@ def test_satellite_info():
 
 
 def test_galileo_info():
-    """
-    Test the endpoint that gives the galileo info for a list of timestamps
-    """
+    """Test the endpoint that gives the galileo info for a list of
+    timestamps."""
     with TestClient(app=app) as client:
         # Try to get info without a Token
         response = client.post(

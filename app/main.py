@@ -1,5 +1,5 @@
-"""
-App main entry point
+"""App main entry point.
+
 :author: Angelo Cutaia
 :copyright: Copyright 2021, Angelo Cutaia
 :version: 1.0.0

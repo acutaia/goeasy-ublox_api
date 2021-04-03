@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Security Utilities for testing
+"""Security Utilities for testing.
 
 :author: Angelo Cutaia
 :copyright: Copyright 2021, Angelo Cutaia
@@ -61,7 +60,7 @@ AUDIENCE = "Travis-ci/test"
 
 
 def configure_security_for_testing():
-    """Change JWT scope for testing purpose"""
+    """Change JWT scope for testing purpose."""
     env_file = dotenv.find_dotenv()
     dotenv.load_dotenv(env_file)
     os.environ["REALM_ACCESS"] = '["Test"]'
@@ -71,10 +70,8 @@ def configure_security_for_testing():
 
 
 def get_valid_token() -> str:
-    """
-    Generate a valid token using the private key associated to the public one\n
-    both keys are used only for testing purpose
-    """
+    """Generate a valid token using the private key associated to the public
+    one\n both keys are used only for testing purpose."""
     to_encode = {
         "jti": str(uuid.uuid4()),
         "exp": datetime.utcnow() + timedelta(seconds=300),
@@ -88,10 +85,8 @@ def get_valid_token() -> str:
 
 
 def get_invalid_token() -> str:
-    """
-    Generate a invalid token using the private key associated to the public one\n
-    both keys are used only for testing purpose
-    """
+    """Generate a invalid token using the private key associated to the public
+    one\n both keys are used only for testing purpose."""
     to_encode = {
         "jti": str(uuid.uuid4()),
         "exp": datetime.utcnow() - timedelta(seconds=300),

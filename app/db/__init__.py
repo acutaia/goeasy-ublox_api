@@ -1,5 +1,4 @@
-"""
-Database Package
+"""Database Package.
 
 :author: Angelo Cutaia
 :copyright: Copyright 2021, Angelo Cutaia

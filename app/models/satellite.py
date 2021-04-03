@@ -1,5 +1,4 @@
-"""
-Satellite models package
+"""Satellite models package.
 
 :author: Angelo Cutaia
 :copyright: Copyright 2021, Angelo Cutaia
@@ -33,9 +32,7 @@ import ujson
 
 
 class RawData(BaseModel):
-    """
-    Model of Raw Data of a Satellite
-    """
+    """Model of Raw Data of a Satellite."""
 
     timestamp: int = Field(
         ...,
@@ -49,17 +46,14 @@ class RawData(BaseModel):
     )
 
     class Config:
-
-        """With this configuration we use ujson to improve performance"""
+        """With this configuration we use ujson to improve performance."""
 
         json_loads = ujson.loads
         json_dumps = ujson.dumps
 
 
 class GalileoData(RawData):
-    """
-    Model of Galileo Data of a Satellite
-    """
+    """Model of Galileo Data of a Satellite."""
 
     raw_data: Optional[str] = Field(
         default=None,
@@ -69,9 +63,7 @@ class GalileoData(RawData):
 
 
 class Satellite(BaseModel):
-    """
-    Model of a Satellite
-    """
+    """Model of a Satellite."""
 
     satellite_id: int = Field(..., description="id of the satellite", example=36)
     info: List[RawData] = Field(
@@ -81,18 +73,14 @@ class Satellite(BaseModel):
     )
 
     class Config:
-        """
-        With this configuration we use ujson to improve performance
-        """
+        """With this configuration we use ujson to improve performance."""
 
         json_loads = ujson.loads
         json_dumps = ujson.dumps
 
 
 class SatelliteInfo(Satellite):
-    """
-    Class used only for documentation
-    """
+    """Class used only for documentation."""
 
     info: List[RawData] = Field(
         ...,
@@ -107,9 +95,7 @@ class SatelliteInfo(Satellite):
 
 
 class Galileo(Satellite):
-    """
-    Model of a Galileo satellite
-    """
+    """Model of a Galileo satellite."""
 
     info: List[GalileoData] = Field(
         ...,
@@ -119,9 +105,7 @@ class Galileo(Satellite):
 
 
 class GalileoInfo(Galileo):
-    """
-    Class used only for documentation
-    """
+    """Class used only for documentation."""
 
     info: List[GalileoData] = Field(
         ...,

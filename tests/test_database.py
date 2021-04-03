@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Test the app.database package
+"""Test the app.database package.
 
 :author: Angelo Cutaia
 :copyright: Copyright 2021, Angelo Cutaia
@@ -56,24 +55,18 @@ __docformat__ = "restructuredtext en"
 
 @pytest.fixture()
 def event_loop():
-    """
-    Set uvloop as the default event loop
-    """
+    """Set uvloop as the default event loop."""
     loop = uvloop.Loop()
     yield loop
     loop.close()
 
 
 class TestDatabase:
-    """
-    Test the postgresql module
-    """
+    """Test the postgresql module."""
 
     @pytest.mark.asyncio
     async def test_extract_raw_data(self):
-        """
-        Test the extraction of raw_data from the database
-        """
+        """Test the extraction of raw_data from the database."""
 
         # Setup the Database
         await FakeDatabase.create_database()
@@ -95,9 +88,7 @@ class TestDatabase:
 
     @pytest.mark.asyncio
     async def test_extract_galileo_data(self):
-        """
-        Test the extraction of galileo_data from the database
-        """
+        """Test the extraction of galileo_data from the database."""
 
         # Setup the Database
         await FakeDatabase.create_database()
@@ -121,9 +112,7 @@ class TestDatabase:
 
     @pytest.mark.asyncio
     async def test_extract_satellite_info(self):
-        """
-        Test the extraction of Satellite Info
-        """
+        """Test the extraction of Satellite Info."""
 
         # Setup the Database
         await FakeDatabase.create_database()
@@ -149,9 +138,7 @@ class TestDatabase:
 
     @pytest.mark.asyncio
     async def test_extract_galileo_info(self):
-        """
-        Test the extraction of Galileo Info
-        """
+        """Test the extraction of Galileo Info."""
 
         # Setup the Database
         await FakeDatabase.create_database()

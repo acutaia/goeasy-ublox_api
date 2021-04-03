@@ -1,5 +1,4 @@
-"""
-App package
+"""App package.
 
 :author: Angelo Cutaia
 :copyright: Copyright 2021, Angelo Cutaia
