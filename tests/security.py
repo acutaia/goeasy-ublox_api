@@ -46,8 +46,6 @@ __docformat__ = "restructuredtext en"
 # ------------------------------------------------------------------------------
 
 
-INVALID_TOKEN = "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJUTU9ZZ1dhRUJxNVo4UWRSVmpZUnFUWEQyX0pxeHlTaWNGQjZGVFI3bXhzIn0.eyJqdGkiOiJlY2NjMzhmOS1kZmRjLTQ2NzUtODYzNi0wYzAyMjExODk1ZDQiLCJleHAiOjE2MDYzNDA0NTksIm5iZiI6MCwiaWF0IjoxNjA2MzQwMTU5LCJpc3MiOiJodHRwczovL2dhbGlsZW9jbG91ZC5nb2Vhc3lwcm9qZWN0LmV1L2F1dGgvcmVhbG1zL0dPRUFTWSIsImF1ZCI6ImRldmVsb3BlciIsInN1YiI6ImU3N2Q4NWFmLWQ0ZjAtNGEyOS04Yzc2LTU2NDYwOTk5ODI0YiIsInR5cCI6IkJlYXJlciIsImF6cCI6ImRldmVsb3BlciIsImF1dGhfdGltZSI6MCwic2Vzc2lvbl9zdGF0ZSI6ImMzNzk5ZjY4LTUyZGItNDY0ZS05ODdlLTNiMTRjNjQzMjdiNyIsImFjciI6IjEiLCJjbGllbnRfc2Vzc2lvbiI6ImJhNGE0ODc5LWVjZmQtNGE0YS05YTI1LTdlYmIwZDk5OGMwNyIsImFsbG93ZWQtb3JpZ2lucyI6W10sInJlc291cmNlX2FjY2VzcyI6eyJkZXZlbG9wZXIiOnsicm9sZXMiOlsiVGVzdCJdfX0sIm5hbWUiOiIiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJkZXZlbG9wZXIifQ.AH7zxdSQwrNGxHqNTqkrPDlBD5TOf67C89M6HSDP8gievCb5woHzdPn3WYXvYrQdQhXPsh_Zfa0qqQiaVUnxX7z94NqExnZxleiRIeGm5XwXwxDm-aC8UiWW4TduGwAVyQ-xa9VxtEP_MfdW0KhOyOTowF93KRonQYRYVazQX4OZdcXsC-sIaJOFsAJPVqfxOSs7CNvFG1Xwid0Uv5nVPO916zITBYNb-qXDE38yaXd_jLmkq3jHb9KJFvf1VbPHbbYbtvNHAunohjyproo4BIAEnqdBw4AhVRtMo_Rt2mteXwoS92aMrNm8FsPVVbHB73IfsgSVO9I_NpYq-kqjgw"
-
 PATH = os.path.abspath(os.path.dirname(__file__))
 
 with open(f"{PATH}/private.pem", "r") as fp:
@@ -83,13 +81,24 @@ def get_valid_token() -> str:
         "iat": datetime.utcnow(),
         "iss": ISSUER,
         "aud": AUDIENCE,
-        "realm_access": {
-            "roles": [
-                "Test"
-            ]
-        }
+        "realm_access": {"roles": ["Test"]},
     }
 
     return jwt.encode(to_encode, PRIVATE_KEY, algorithm="RS256")
 
 
+def get_invalid_token() -> str:
+    """
+    Generate a invalid token using the private key associated to the public one\n
+    both keys are used only for testing purpose
+    """
+    to_encode = {
+        "jti": str(uuid.uuid4()),
+        "exp": datetime.utcnow() - timedelta(seconds=300),
+        "iat": datetime.utcnow() - timedelta(seconds=600),
+        "iss": ISSUER,
+        "aud": AUDIENCE,
+        "realm_access": {"roles": ["Test"]},
+    }
+
+    return jwt.encode(to_encode, PRIVATE_KEY, algorithm="RS256")

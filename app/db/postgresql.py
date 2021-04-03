@@ -26,8 +26,10 @@ from typing import Optional
 from asyncpg import Connection, create_pool
 from asyncpg.pool import Pool
 from asyncpg.exceptions import UndefinedTableError
+
 # Internal
-from ..models.satellite import RawData, GalileoData, Satellite, SatelliteInfo, Galileo, GalileoInfo
+from ..models.satellite import Satellite, Galileo
+
 from ..config import get_database_settings
 
 # ---------------------------------------------------------------------------------------
@@ -45,7 +47,7 @@ class DataBase:
             password=settings.postgres_pwd,
             database=settings.postgres_db,
             host=settings.postgres_host,
-            port=settings.postgres_port
+            port=settings.postgres_port,
         )
         cls.nation = settings.nation
 
@@ -54,10 +56,7 @@ class DataBase:
         await cls.pool.close()
 
     @classmethod
-    async def extract_satellite_info(
-            cls,
-            satellite: Satellite
-    ) -> dict:
+    async def extract_satellite_info(cls, satellite: Satellite) -> dict:
         """
         Extract all the raw data of the satellites list
         :param satellite: Satellite Id with the list of the timestamp of the data to retrieve
@@ -65,19 +64,14 @@ class DataBase:
         """
         async with cls.pool.acquire() as conn:
             for raw_data in satellite.info:
-                raw_data.raw_data = await cls._extract_data(conn, satellite.satellite_id, raw_data.timestamp)
+                raw_data.raw_data = await cls._extract_data(
+                    conn, satellite.satellite_id, raw_data.timestamp
+                )
 
-        return {
-                "satellite_id": satellite.satellite_id,
-                "info": satellite.info
-            }
+        return {"satellite_id": satellite.satellite_id, "info": satellite.info}
 
     @classmethod
-    async def extract_raw_data(
-            cls,
-            satellite_id: int,
-            timestamp: int
-    ) -> dict:
+    async def extract_raw_data(cls, satellite_id: int, timestamp: int) -> dict:
         """
          Extract Raw data of the Satellite in a specific timestamp
         :param satellite_id: Satellite id
@@ -86,16 +80,13 @@ class DataBase:
         """
         async with cls.pool.acquire() as conn:
             return {
-                    "timestamp": timestamp,
-                    "raw_data": await cls._extract_data(conn, satellite_id, timestamp)
-                }
+                "timestamp": timestamp,
+                "raw_data": await cls._extract_data(conn, satellite_id, timestamp),
+            }
 
     @classmethod
     async def _extract_data(
-            cls,
-            conn: Connection,
-            satellite_id: int,
-            timestamp: int
+        cls, conn: Connection, satellite_id: int, timestamp: int
     ) -> Optional[str]:
         """
         Utility function to extract data from the database
@@ -108,8 +99,8 @@ class DataBase:
             return await conn.fetchval(
                 f"SELECT (CASE WHEN osnma = 0 THEN 'AttackOnReferenceSystem' ELSE raw_data END)"
                 f'FROM "{datetime.fromtimestamp(int(timestamp/1000)).year}_{cls.nation}_{satellite_id}" '
-                f'WHERE timestampmessage_unix '
-                f'BETWEEN {timestamp - 1000} AND {timestamp + 1000};'
+                f"WHERE timestampmessage_unix "
+                f"BETWEEN {timestamp - 1000} AND {timestamp + 1000};"
             )
 
         except UndefinedTableError:
@@ -117,10 +108,7 @@ class DataBase:
             return None
 
     @classmethod
-    async def extract_galileo_info(
-            cls,
-            satellite: Galileo
-    ) -> dict:
+    async def extract_galileo_info(cls, satellite: Galileo) -> dict:
         """
         Extract all the raw data of the satellites list
         :param satellite: Satellite Id with the list of the timestamp of the data to retrieve
@@ -128,19 +116,14 @@ class DataBase:
         """
         async with cls.pool.acquire() as conn:
             for raw_data in satellite.info:
-                raw_data.raw_data = await cls._extract_galileo_data(conn, satellite.satellite_id, raw_data.timestamp)
+                raw_data.raw_data = await cls._extract_galileo_data(
+                    conn, satellite.satellite_id, raw_data.timestamp
+                )
 
-        return {
-                "satellite_id": satellite.satellite_id,
-                "info": satellite.info
-            }
+        return {"satellite_id": satellite.satellite_id, "info": satellite.info}
 
     @classmethod
-    async def extract_galileo_data(
-            cls,
-            satellite_id: int,
-            timestamp: int
-    ) -> dict:
+    async def extract_galileo_data(cls, satellite_id: int, timestamp: int) -> dict:
         """
          Extract Raw data of the Satellite in a specific timestamp
         :param satellite_id: Satellite id
@@ -149,16 +132,15 @@ class DataBase:
         """
         async with cls.pool.acquire() as conn:
             return {
-                    "timestamp": timestamp,
-                    "raw_data": await cls._extract_galileo_data(conn, satellite_id, timestamp)
-                }
+                "timestamp": timestamp,
+                "raw_data": await cls._extract_galileo_data(
+                    conn, satellite_id, timestamp
+                ),
+            }
 
     @classmethod
     async def _extract_galileo_data(
-            cls,
-            conn: Connection,
-            satellite_id: int,
-            timestamp: int
+        cls, conn: Connection, satellite_id: int, timestamp: int
     ) -> Optional[str]:
         """
         Utility function to extract data from the database
@@ -171,8 +153,8 @@ class DataBase:
             return await conn.fetchval(
                 f"SELECT (CASE WHEN osnma = 0 THEN 'AttackOnReferenceSystem' ELSE galileo_data END)"
                 f'FROM "{datetime.fromtimestamp(int(timestamp / 1000)).year}_{cls.nation}_{satellite_id}" '
-                f'WHERE timestampmessage_unix '
-                f'BETWEEN {timestamp - 1000} AND {timestamp + 1000};'
+                f"WHERE timestampmessage_unix "
+                f"BETWEEN {timestamp - 1000} AND {timestamp + 1000};"
             )
 
         except UndefinedTableError:
@@ -183,5 +165,6 @@ class DataBase:
 @lru_cache(maxsize=1)
 def get_database() -> DataBase:
     return DataBase()
+
 
 # ---------------------------------------------------------------------------------------

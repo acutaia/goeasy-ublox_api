@@ -24,12 +24,10 @@ Asynchronous database
 """
 
 # Standard library
-import asyncio
 import time
 
 # Asynchronous libraries
 import asyncpg
-from uvloop import Loop
 
 # Database
 from app.config import get_database_settings
@@ -83,10 +81,56 @@ time_raw_ck_B = 239
 
 raw_data = bytes(
     [
-        0x2, 0x13, 0x2C, 0x0, 0x2, 0x12, 0x1, 0x0, 0x9, 0xE, 0x2, 0xD2, 0x34, 0x77, 0x76, 0x7,
-        0x5D, 0x63, 0x0, 0x1, 0xF5, 0x51, 0x22, 0x24, 0x0, 0x40, 0xF, 0x7F, 0x0, 0x40, 0x65,
-        0xA6, 0x2A, 0x0, 0x0, 0x0, 0xD2, 0x57, 0xAA, 0xAA, 0x0, 0x40, 0xBF, 0x3F, 0xD5, 0x9A,
-        0xE8, 0x3F, 0x4A, 0x7C
+        0x2,
+        0x13,
+        0x2C,
+        0x0,
+        0x2,
+        0x12,
+        0x1,
+        0x0,
+        0x9,
+        0xE,
+        0x2,
+        0xD2,
+        0x34,
+        0x77,
+        0x76,
+        0x7,
+        0x5D,
+        0x63,
+        0x0,
+        0x1,
+        0xF5,
+        0x51,
+        0x22,
+        0x24,
+        0x0,
+        0x40,
+        0xF,
+        0x7F,
+        0x0,
+        0x40,
+        0x65,
+        0xA6,
+        0x2A,
+        0x0,
+        0x0,
+        0x0,
+        0xD2,
+        0x57,
+        0xAA,
+        0xAA,
+        0x0,
+        0x40,
+        0xBF,
+        0x3F,
+        0xD5,
+        0x9A,
+        0xE8,
+        0x3F,
+        0x4A,
+        0x7C,
     ]
 ).hex()
 """Ublox message raw_data"""
@@ -136,7 +180,7 @@ DATA_TO_STORE = (
     time_raw_ck_A,
     time_raw_ck_B,
     osnma,
-    timestampMessage_galileo
+    timestampMessage_galileo,
 )
 """Data to use to test the database"""
 
@@ -152,6 +196,7 @@ class FakeDatabase:
     The scope of this class is to build the database and save data inside it
     using a connection pool
     """
+
     settings = get_database_settings()
     """Database Settings"""
 
@@ -170,7 +215,7 @@ class FakeDatabase:
                 port=cls.settings.postgres_port,
                 user=cls.settings.postgres_user,
                 password=cls.settings.postgres_pwd,
-                database=cls.settings.postgres_db
+                database=cls.settings.postgres_db,
             )
 
         except asyncpg.InvalidCatalogNameError:
@@ -212,7 +257,7 @@ class FakeDatabase:
         try:
             # Take a connection from the pool and execute the query
             await cls.pool.execute(
-                f'''
+                f"""
                 INSERT INTO "{table}" (
                 receptiontime,
                 timestampmessage_unix,
@@ -230,8 +275,8 @@ class FakeDatabase:
                 raw_ck_b_time,
                 osnma,
                 timestampmessage_galileo
-                ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16);''',
-                *data_to_store
+                ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16);""",
+                *data_to_store,
             )
 
         # Check if the table does'nt exist
@@ -241,7 +286,7 @@ class FakeDatabase:
             # Create the table
             async with cls.pool.acquire() as con:
                 await con.execute(
-                    f'''
+                    f"""
                         CREATE TABLE IF NOT EXISTS "{table}" (
                         receptiontime bigint,
                         timestampmessage_unix bigint,
@@ -261,14 +306,14 @@ class FakeDatabase:
                         osnma integer,
                         timestampmessage_galileo bigint
                         );
-                         '''
+                         """
                 )
 
                 # Create a index for the table
                 await con.execute(
-                    f'''CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_timestampmessage_unix on "{table}"
-                     (timestampmessage_unix DESC NULLS LAST);'''
-                    )
+                    f"""CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_timestampmessage_unix on "{table}"
+                     (timestampmessage_unix DESC NULLS LAST);"""
+                )
 
             # store data in the new table
             await cls.store_data(data_to_store)

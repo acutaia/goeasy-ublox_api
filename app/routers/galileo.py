@@ -39,10 +39,7 @@ auth = get_signature()
 database = get_database()
 
 # Instantiate router
-router = APIRouter(
-    prefix="/api/v1/galileo",
-    tags=["Galileo"]
-)
+router = APIRouter(prefix="/api/v1/galileo", tags=["Galileo"])
 
 # --------------------------------------------------------------------------------------------
 
@@ -53,7 +50,7 @@ router = APIRouter(
     response_model=GalileoInfo,
     summary="Extract Galileo Info",
     response_description="The galileo data of the satellite in the specified timestamps",
-    dependencies=[Depends(auth)]
+    dependencies=[Depends(auth)],
 )
 async def galileo_info(satellite: Galileo = Body(...)):
     """
@@ -65,6 +62,7 @@ async def galileo_info(satellite: Galileo = Body(...)):
     """
     return await database.extract_galileo_info(satellite)
 
+
 # --------------------------------------------------------------------------------------------
 
 
@@ -74,11 +72,15 @@ async def galileo_info(satellite: Galileo = Body(...)):
     response_model=GalileoData,
     summary="Extract Galileo Data",
     response_description="Galileo Data",
-    dependencies=[Depends(auth)]
+    dependencies=[Depends(auth)],
 )
 async def galileo_data(
     satellite_id: int = Path(..., description="Id of the Satellite", example=36),
-    timestamp: int = Path(..., description="Timestamp in ms of the data to retrieve", example=1613406498000)
+    timestamp: int = Path(
+        ...,
+        description="Timestamp in ms of the data to retrieve",
+        example=1613406498000,
+    ),
 ):
     """
     Extract the Galileo Data of a satellite in a specific timestamp
@@ -88,5 +90,6 @@ async def galileo_data(
     - **raw_data**: data sent by the satellite in that timestamp
     """
     return await database.extract_galileo_data(satellite_id, timestamp)
+
 
 # --------------------------------------------------------------------------------------------

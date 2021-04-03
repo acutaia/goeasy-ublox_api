@@ -48,19 +48,18 @@ class Signature(HTTPBearer):
                 jwt_token,
                 f"-----BEGIN PUBLIC KEY-----\n"
                 f"{settings.realm_public_key}"
-                f"\n-----END PUBLIC KEY-----""",
+                f"\n-----END PUBLIC KEY-----"
+                "",
                 settings.algorithm,
                 issuer=settings.issuer,
-                audience=settings.audience
+                audience=settings.audience,
             )
         except JWTError:
             raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="invalid_bearer_token"
+                status_code=status.HTTP_401_UNAUTHORIZED, detail="invalid_bearer_token"
             )
 
 
 @lru_cache(maxsize=1)
 def get_signature() -> Signature:
     return Signature()
-

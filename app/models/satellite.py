@@ -35,87 +35,87 @@ import ujson
 
 class RawData(BaseModel):
     """Model of Raw Data of a Satellite"""
+
     timestamp: int = Field(
         ...,
         description="Timestamp in ms of the data to retrieve",
-        example=1613406498000
+        example=1613406498000,
     )
     raw_data: Optional[str] = Field(
         default=None,
         description="Data of the Satellite in a specific timestamp",
-        example="02132c000224010009080200afe20702188a1e3ce838b8d80000fa90004037842a000000f377aaaa00403fdabdaaaa2ac260"
+        example="02132c000224010009080200afe20702188a1e3ce838b8d80000fa90004037842a000000f377aaaa00403fdabdaaaa2ac260",
     )
 
     class Config:
         """With this configuration we use ujson to improve performance"""
+
         json_loads = ujson.loads
         json_dumps = ujson.dumps
 
 
 class GalileoData(RawData):
     """Model of Galileo Data of a Satellite"""
+
     raw_data: Optional[str] = Field(
         default=None,
         description="Galileo data in a specific timestamp",
-        example="077677340100635d242251f57f0f40a66540000000002aaaaa57d23fbf40"
+        example="077677340100635d242251f57f0f40a66540000000002aaaaa57d23fbf40",
     )
 
 
 class Satellite(BaseModel):
     """Model of a Satellite"""
-    satellite_id: int = Field(
-        ...,
-        description="id of the satellite",
-        example=36
-    )
+
+    satellite_id: int = Field(..., description="id of the satellite", example=36)
     info: List[RawData] = Field(
         ...,
         description="List of requested Raw Data in specifics timestamps",
-        example=[
-            RawData(timestamp=1613406498000)
-        ]
+        example=[RawData(timestamp=1613406498000)],
     )
 
     class Config:
         """With this configuration we use ujson to improve performance"""
+
         json_loads = ujson.loads
         json_dumps = ujson.dumps
 
 
 class SatelliteInfo(Satellite):
     """Class used only for documentation"""
+
     info: List[RawData] = Field(
         ...,
         description="List of Raw Data of the satellite in a specific timestamp",
         example=[
             RawData(
                 timestamp=1613406498000,
-                raw_data="02132c000224010009080200afe20702188a1e3ce838b8d80000fa90004037842a000000f377aaaa00403fdabdaaaa2ac260"
+                raw_data="02132c000224010009080200afe20702188a1e3ce838b8d80000fa90004037842a000000f377aaaa00403fdabdaaaa2ac260",
             )
-        ]
+        ],
     )
 
 
 class Galileo(Satellite):
     """Model of a Galileo satellite """
+
     info: List[GalileoData] = Field(
         ...,
         description="List of requested Galileo Data in specifics timestamps",
-        example=[
-            GalileoData(timestamp=1613406498000)
-        ]
+        example=[GalileoData(timestamp=1613406498000)],
     )
 
 
 class GalileoInfo(Galileo):
     """Class used only for documentation"""
+
     info: List[GalileoData] = Field(
         ...,
         description="List of Galileo Data of in a specific timestamp",
         example=[
             GalileoData(
                 timestamp=1613406498000,
-                raw_data="077677340100635d242251f57f0f40a66540000000002aaaaa57d23fbf40"
+                raw_data="077677340100635d242251f57f0f40a66540000000002aaaaa57d23fbf40",
             )
-        ]
+        ],
     )

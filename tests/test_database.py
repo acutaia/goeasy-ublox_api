@@ -28,7 +28,13 @@ import uvloop
 import pytest
 
 # DataBase
-from .postgresql import FakeDatabase, raw_data, timestampMessage_unix, raw_svId, galileo_data
+from .postgresql import (
+    FakeDatabase,
+    raw_data,
+    timestampMessage_unix,
+    raw_svId,
+    galileo_data,
+)
 from app.db.postgresql import DataBase
 
 # Satellites
@@ -79,9 +85,9 @@ class TestDatabase:
         assert raw_data == data["raw_data"], "Raw Data should be equal"
 
         # Try to extract data that aren't inside the db
-        data = await DataBase.extract_raw_data(raw_svId, timestampMessage_unix+4000)
+        data = await DataBase.extract_raw_data(raw_svId, timestampMessage_unix + 4000)
         assert data["raw_data"] is None, "Raw Data should be none"
-        data = await DataBase.extract_raw_data(raw_svId+1, timestampMessage_unix)
+        data = await DataBase.extract_raw_data(raw_svId + 1, timestampMessage_unix)
         assert data["raw_data"] is None, "Raw Data should be none"
 
         # Disconnect from the Database
@@ -103,7 +109,9 @@ class TestDatabase:
         assert galileo_data == data["raw_data"], "Galileo Data should be equal"
 
         # Try to extract data that aren't inside the db
-        data = await DataBase.extract_galileo_data(raw_svId, timestampMessage_unix + 4000)
+        data = await DataBase.extract_galileo_data(
+            raw_svId, timestampMessage_unix + 4000
+        )
         assert data["raw_data"] is None, "Galileo Data should be none"
         data = await DataBase.extract_galileo_data(raw_svId + 1, timestampMessage_unix)
         assert data["raw_data"] is None, "Galileo Data should be none"
@@ -126,13 +134,9 @@ class TestDatabase:
         satellite = Satellite(
             satellite_id=raw_svId,
             info=[
-                RawData(
-                    timestamp=timestampMessage_unix
-                ),
-                RawData(
-                    timestamp=timestampMessage_unix+4000
-                )
-            ]
+                RawData(timestamp=timestampMessage_unix),
+                RawData(timestamp=timestampMessage_unix + 4000),
+            ],
         )
         # Try to extract satellites info from the db
         satellite_info = await DataBase.extract_satellite_info(satellite)
@@ -158,20 +162,17 @@ class TestDatabase:
         satellite = Galileo(
             satellite_id=raw_svId,
             info=[
-                GalileoData(
-                    timestamp=timestampMessage_unix
-                ),
-                GalileoData(
-                    timestamp=timestampMessage_unix + 4000
-                )
-            ]
+                GalileoData(timestamp=timestampMessage_unix),
+                GalileoData(timestamp=timestampMessage_unix + 4000),
+            ],
         )
         # Try to extract satellites info from the db
         galileo_info = await DataBase.extract_galileo_info(satellite)
 
-        assert galileo_data == galileo_info["info"][0].raw_data, "Raw Data must be equal"
+        assert (
+            galileo_data == galileo_info["info"][0].raw_data
+        ), "Raw Data must be equal"
         assert galileo_info["info"][1].raw_data is None, "Raw Data must be None"
 
         # Disconnect from the Database
         await DataBase.disconnect()
-

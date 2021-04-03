@@ -39,10 +39,7 @@ auth = get_signature()
 database = get_database()
 
 # Instantiate router
-router = APIRouter(
-    prefix="/api/v1/galileo/ublox",
-    tags=["Ublox"]
-)
+router = APIRouter(prefix="/api/v1/galileo/ublox", tags=["Ublox"])
 
 # --------------------------------------------------------------------------------------------
 
@@ -53,7 +50,7 @@ router = APIRouter(
     response_model=SatelliteInfo,
     summary="Extract Ublox Info",
     response_description="The Ublox data of the satellite in the specified timestamps",
-    dependencies=[Depends(auth)]
+    dependencies=[Depends(auth)],
 )
 async def ublox_info(satellite: Satellite = Body(...)):
     """
@@ -65,6 +62,7 @@ async def ublox_info(satellite: Satellite = Body(...)):
     """
     return await database.extract_satellite_info(satellite)
 
+
 # --------------------------------------------------------------------------------------------
 
 
@@ -74,11 +72,15 @@ async def ublox_info(satellite: Satellite = Body(...)):
     response_model=RawData,
     summary="Extract Ublox Data",
     response_description="Ublox Data",
-    dependencies=[Depends(auth)]
+    dependencies=[Depends(auth)],
 )
 async def ublox_data(
     satellite_id: int = Path(..., description="Id of the Satellite", example=36),
-    timestamp: int = Path(..., description="Timestamp in ms of the data to retrieve", example=1613406498000)
+    timestamp: int = Path(
+        ...,
+        description="Timestamp in ms of the data to retrieve",
+        example=1613406498000,
+    ),
 ):
     """
     Extract the Ublox Data of a satellite in a specific timestamp
@@ -88,5 +90,6 @@ async def ublox_data(
     - **raw_data**: data sent by the satellite in that timestamp
     """
     return await database.extract_raw_data(satellite_id, timestamp)
+
 
 # --------------------------------------------------------------------------------------------

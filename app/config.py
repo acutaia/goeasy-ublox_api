@@ -25,6 +25,7 @@ App Settings
 # Standard Library
 from functools import lru_cache
 from typing import List
+
 # Third Party
 from pydantic import BaseSettings
 
@@ -47,6 +48,7 @@ class DataBaseSettings(BaseSettings):
 def get_database_settings() -> DataBaseSettings:
     return DataBaseSettings()
 
+
 # --------------------------------------------------------------
 
 
@@ -64,6 +66,3 @@ class SecuritySettings(BaseSettings):
 @lru_cache(maxsize=1)
 def get_security_settings() -> SecuritySettings:
     return SecuritySettings()
-
-
-
