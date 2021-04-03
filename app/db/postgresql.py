@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 Database utility functions
 :author: Angelo Cutaia
@@ -38,6 +37,7 @@ from ..config import get_database_settings
 class DataBase:
     pool: Pool = None
     nation: str = None
+    attack_on_reference_system: str = "AttackOnReferenceSystem"
 
     @classmethod
     async def connect(cls) -> None:
@@ -97,7 +97,7 @@ class DataBase:
         """
         try:
             return await conn.fetchval(
-                f"SELECT (CASE WHEN osnma = 0 THEN 'AttackOnReferenceSystem' ELSE raw_data END)"
+                f"SELECT (CASE WHEN osnma = 0 THEN '{cls.attack_on_reference_system}' ELSE raw_data END)"
                 f'FROM "{datetime.fromtimestamp(int(timestamp/1000)).year}_{cls.nation}_{satellite_id}" '
                 f"WHERE timestampmessage_unix "
                 f"BETWEEN {timestamp - 1000} AND {timestamp + 1000};"
@@ -151,7 +151,7 @@ class DataBase:
         """
         try:
             return await conn.fetchval(
-                f"SELECT (CASE WHEN osnma = 0 THEN 'AttackOnReferenceSystem' ELSE galileo_data END)"
+                f"SELECT (CASE WHEN osnma = 0 THEN '{cls.attack_on_reference_system}' ELSE galileo_data END)"
                 f'FROM "{datetime.fromtimestamp(int(timestamp / 1000)).year}_{cls.nation}_{satellite_id}" '
                 f"WHERE timestampmessage_unix "
                 f"BETWEEN {timestamp - 1000} AND {timestamp + 1000};"

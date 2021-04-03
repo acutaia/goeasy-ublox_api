@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 JWT_BEARER models package
 

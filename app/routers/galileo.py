@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 Galileo Router
 
@@ -53,8 +52,7 @@ router = APIRouter(prefix="/api/v1/galileo", tags=["Galileo"])
     dependencies=[Depends(auth)],
 )
 async def galileo_info(satellite: Galileo = Body(...)):
-    """
-    Extract the Galileo Data of a satellite in a list of specific timestamps
+    """ Extract the Galileo Data of a satellite in a list of specific timestamps
 
     - **satellite_id**: identification code of the satellite
     - **info**: list of requested timestamp in ms
@@ -82,8 +80,7 @@ async def galileo_data(
         example=1613406498000,
     ),
 ):
-    """
-    Extract the Galileo Data of a satellite in a specific timestamp
+    """ Extract the Galileo Data of a satellite in a specific timestamp
 
     - **satellite_id**: identification code of the satellite
     - **timestamp**: requested timestamp in ms

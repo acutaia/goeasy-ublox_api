@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 App main entry point
 :author: Angelo Cutaia

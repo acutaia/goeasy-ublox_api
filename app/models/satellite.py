@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 Satellite models package
 
@@ -34,6 +33,7 @@ import ujson
 
 
 class RawData(BaseModel):
+
     """Model of Raw Data of a Satellite"""
 
     timestamp: int = Field(
@@ -48,6 +48,7 @@ class RawData(BaseModel):
     )
 
     class Config:
+
         """With this configuration we use ujson to improve performance"""
 
         json_loads = ujson.loads
@@ -55,6 +56,7 @@ class RawData(BaseModel):
 
 
 class GalileoData(RawData):
+
     """Model of Galileo Data of a Satellite"""
 
     raw_data: Optional[str] = Field(
@@ -65,6 +67,7 @@ class GalileoData(RawData):
 
 
 class Satellite(BaseModel):
+
     """Model of a Satellite"""
 
     satellite_id: int = Field(..., description="id of the satellite", example=36)
@@ -75,6 +78,7 @@ class Satellite(BaseModel):
     )
 
     class Config:
+
         """With this configuration we use ujson to improve performance"""
 
         json_loads = ujson.loads
@@ -82,6 +86,7 @@ class Satellite(BaseModel):
 
 
 class SatelliteInfo(Satellite):
+
     """Class used only for documentation"""
 
     info: List[RawData] = Field(
@@ -97,6 +102,7 @@ class SatelliteInfo(Satellite):
 
 
 class Galileo(Satellite):
+
     """Model of a Galileo satellite """
 
     info: List[GalileoData] = Field(
@@ -107,6 +113,7 @@ class Galileo(Satellite):
 
 
 class GalileoInfo(Galileo):
+
     """Class used only for documentation"""
 
     info: List[GalileoData] = Field(
