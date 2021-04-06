@@ -1,4 +1,5 @@
-"""JWT_BEARER  package
+"""
+JWT_BEARER  package
 
 :author: Angelo Cutaia
 :copyright: Copyright 2021, Angelo Cutaia

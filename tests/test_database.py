@@ -1,4 +1,5 @@
-"""Test the app.database package
+"""
+Test the app.database package
 
 :author: Angelo Cutaia
 :copyright: Copyright 2021, Angelo Cutaia

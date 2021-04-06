@@ -1,4 +1,5 @@
-"""Asynchronous database
+"""
+Asynchronous database
 
 :author: Angelo Cutaia
 :copyright: Copyright 2021, Angelo Cutaia

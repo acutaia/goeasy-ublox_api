@@ -1,10 +1,11 @@
 # Code
 asyncpg>=0.22.0
 aiofiles<=0.6.0
-ujson>=4.0.2
 fastapi>=0.63.0, <0.64.0
-uvicorn[standard]
+gunicorn>=20.1.0
 python-jose[cryptography]>=3.2.0
+uvicorn[standard]
+ujson>=4.0.2
 
 # Testing
 pytest>=6.2.2

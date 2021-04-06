@@ -1,4 +1,5 @@
-"""App Settings
+"""
+App Settings
 
 :author: Angelo Cutaia
 :copyright: Copyright 2021, Angelo Cutaia
@@ -36,6 +37,7 @@ class DataBaseSettings(BaseSettings):
     postgres_user: str
     postgres_db: str
     postgres_pwd: str
+    connection_number: int
     nation: str
 
     class Config:

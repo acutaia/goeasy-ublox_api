@@ -1,4 +1,5 @@
-"""Satellite models package.
+"""
+Satellite models package.
 
 :author: Angelo Cutaia
 :copyright: Copyright 2021, Angelo Cutaia
