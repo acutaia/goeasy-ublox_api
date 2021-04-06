@@ -50,7 +50,7 @@ class DataBase:
             host=settings.postgres_host,
             port=settings.postgres_port,
             min_size=settings.connection_number,
-            max_size=settings.connection_number
+            max_size=settings.connection_number,
         )
         cls.nation = settings.nation
 

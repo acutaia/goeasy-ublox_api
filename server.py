@@ -40,6 +40,7 @@ class GunicornSettings(BaseSettings):
     class Config:
         env_file = ".env"
 
+
 # -------------------------------------------------------------------------------
 
 
@@ -53,7 +54,8 @@ class StandaloneApplication(BaseApplication):
 
     def load_config(self):
         config = {
-            key: value for key, value in self.options.items()
+            key: value
+            for key, value in self.options.items()
             if key in self.cfg.settings and value is not None
         }
         for key, value in config.items():
@@ -62,10 +64,11 @@ class StandaloneApplication(BaseApplication):
     def load(self):
         return self.application
 
+
 # -------------------------------------------------------------------------------
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     settings = GunicornSettings()
 
     options = {
@@ -83,6 +86,8 @@ if __name__ == '__main__':
         options["workers"] = settings.max_workers_number
 
     # Ensure connections to the database are set to the max value possible
-    os.environ["CONNECTION_NUMBER"] = f'{int(settings.database_max_connection_number / options["workers"])}'
+    os.environ[
+        "CONNECTION_NUMBER"
+    ] = f'{int(settings.database_max_connection_number / options["workers"])}'
 
     StandaloneApplication(app, options).run()
