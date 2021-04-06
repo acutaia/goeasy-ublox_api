@@ -52,7 +52,8 @@ router = APIRouter(prefix="/api/v1/galileo/ublox", tags=["Ublox"])
     dependencies=[Depends(auth)],
 )
 async def ublox_info(satellite: Satellite = Body(...)):
-    """Extract the Ublox Data of a satellite in a list of specific timestamps.
+    """
+    Extract the Ublox Data of a satellite in a list of specific timestamps.
 
     - **satellite_id**: identification code of the satellite
     - **info**: list of requested timestamp in ms

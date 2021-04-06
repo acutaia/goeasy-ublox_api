@@ -60,7 +60,8 @@ class DataBase:
 
     @classmethod
     async def extract_satellite_info(cls, satellite: Satellite) -> dict:
-        """Extract all the raw data of the satellites list.
+        """
+        Extract all the raw data of the satellites list.
 
         :param satellite: Satellite Id with the list of the timestamp of the data to retrieve
         :return: The info required for a specific Satellite
@@ -75,7 +76,8 @@ class DataBase:
 
     @classmethod
     async def extract_raw_data(cls, satellite_id: int, timestamp: int) -> dict:
-        """Extract Raw data of the Satellite in a specific timestamp.
+        """
+        Extract Raw data of the Satellite in a specific timestamp.
 
         :param satellite_id: Satellite id
         :param timestamp: Timestamp of the raw data to retrieve
@@ -91,7 +93,8 @@ class DataBase:
     async def _extract_data(
         cls, conn: Connection, satellite_id: int, timestamp: int
     ) -> Optional[str]:
-        """Utility function to extract data from the database.
+        """
+        Utility function to extract data from the database.
 
         :param conn: A connection to the database
         :param satellite_id: Id of the satellite
@@ -112,7 +115,8 @@ class DataBase:
 
     @classmethod
     async def extract_galileo_info(cls, satellite: Galileo) -> dict:
-        """Extract all the raw data of the satellites list.
+        """
+        Extract all the raw data of the satellites list.
 
         :param satellite: Satellite Id with the list of the timestamp of the data to retrieve
         :return: The info required for a specific Satellite
@@ -127,7 +131,8 @@ class DataBase:
 
     @classmethod
     async def extract_galileo_data(cls, satellite_id: int, timestamp: int) -> dict:
-        """Extract Raw data of the Satellite in a specific timestamp.
+        """
+        Extract Raw data of the Satellite in a specific timestamp.
 
         :param satellite_id: Satellite id
         :param timestamp: Timestamp of the raw data to retrieve
@@ -145,7 +150,8 @@ class DataBase:
     async def _extract_galileo_data(
         cls, conn: Connection, satellite_id: int, timestamp: int
     ) -> Optional[str]:
-        """Utility function to extract data from the database.
+        """
+        Utility function to extract data from the database.
 
         :param conn: A connection to the database
         :param satellite_id: Id of the satellite

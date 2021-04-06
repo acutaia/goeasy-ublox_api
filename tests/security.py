@@ -70,8 +70,9 @@ def configure_security_for_testing():
 
 
 def get_valid_token() -> str:
-    """Generate a valid token using the private key associated to the public
-    one\n both keys are used only for testing purpose."""
+    """
+    Generate a valid token using the private key associated to the public
+    one both keys are used only for testing purpose."""
     to_encode = {
         "jti": str(uuid.uuid4()),
         "exp": datetime.utcnow() + timedelta(seconds=300),
@@ -85,8 +86,9 @@ def get_valid_token() -> str:
 
 
 def get_invalid_token() -> str:
-    """Generate a invalid token using the private key associated to the public
-    one\n both keys are used only for testing purpose."""
+    """
+    Generate a invalid token using the private key associated to the public
+    one both keys are used only for testing purpose."""
     to_encode = {
         "jti": str(uuid.uuid4()),
         "exp": datetime.utcnow() - timedelta(seconds=300),

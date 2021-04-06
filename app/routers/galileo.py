@@ -52,7 +52,8 @@ router = APIRouter(prefix="/api/v1/galileo", tags=["Galileo"])
     dependencies=[Depends(auth)],
 )
 async def galileo_info(satellite: Galileo = Body(...)):
-    """Extract the Galileo Data of a satellite in a list of specific
+    """
+    Extract the Galileo Data of a satellite in a list of specific
     timestamps.
 
     - **satellite_id**: identification code of the satellite
