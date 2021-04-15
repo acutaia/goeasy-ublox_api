@@ -70,23 +70,22 @@ class StandaloneApplication(BaseApplication):
 
 if __name__ == "__main__":
     gunicorn_settings = GunicornSettings()
-    if gunicorn_settings.use_gunicorn:
-        options = {
-            "bind": f"0.0.0.0:{gunicorn_settings.server_port}",
-            "workers": gunicorn_settings.cores_number,
-            "keepalive": gunicorn_settings.keep_alive,
-            "loglevel": gunicorn_settings.gunicorn_log_level,
-            "accesslog": "-",
-            "errorlog": "-",
-            "worker_class": "uvicorn.workers.UvicornWorker",
-        }
+    options = {
+        "bind": f"0.0.0.0:{gunicorn_settings.server_port}",
+        "workers": gunicorn_settings.cores_number,
+        "keepalive": gunicorn_settings.keep_alive,
+        "loglevel": gunicorn_settings.gunicorn_log_level,
+        "accesslog": "-",
+        "errorlog": "-",
+        "worker_class": "uvicorn.workers.UvicornWorker",
+    }
 
-        # Regulate workers
-        if options["workers"] > gunicorn_settings.max_workers_number:
-            options["workers"] = gunicorn_settings.max_workers_number
+    # Regulate workers
+    if options["workers"] > gunicorn_settings.max_workers_number:
+        options["workers"] = gunicorn_settings.max_workers_number
 
-        # Ensure connections to the database are set to the max value possible
-        os.environ[
-            "CONNECTION_NUMBER"
-        ] = f'{int(gunicorn_settings.database_max_connection_number / options["workers"])}'
-        StandaloneApplication(app, options).run()
+    # Ensure connections to the database are set to the max value possible
+    os.environ[
+        "CONNECTION_NUMBER"
+    ] = f'{int(gunicorn_settings.database_max_connection_number / options["workers"])}'
+    StandaloneApplication(app, options).run()
