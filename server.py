@@ -21,26 +21,12 @@ import os
 
 # Third Party
 from gunicorn.app.base import BaseApplication
-import uvicorn
 from pydantic import BaseSettings
 
 # Internal
 from app.main import app
 
 # -------------------------------------------------------------------------------------
-
-
-class UvicornSettings(BaseSettings):
-    log_level: str
-    server_port: int
-
-    class Config:
-        """Location of the settings file."""
-
-        env_file = ".env"
-
-
-# -------------------------------------------------------------------------------
 
 
 class GunicornSettings(BaseSettings):
@@ -84,7 +70,6 @@ class StandaloneApplication(BaseApplication):
 
 
 if __name__ == "__main__":
-    uvicorn_settings = UvicornSettings()
     gunicorn_settings = GunicornSettings()
     if gunicorn_settings.use_gunicorn:
         options = {
@@ -106,12 +91,3 @@ if __name__ == "__main__":
             "CONNECTION_NUMBER"
         ] = f'{int(gunicorn_settings.database_max_connection_number / options["workers"])}'
         StandaloneApplication(app, options).run()
-
-    else:
-        uvicorn.run(
-            app,
-            host="0.0.0.0",
-            port=uvicorn_settings.server_port,
-            log_level=uvicorn_settings.log_level,
-            loop="uvloop",
-        )
