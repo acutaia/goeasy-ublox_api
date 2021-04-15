@@ -30,7 +30,6 @@ from app.main import app
 
 
 class GunicornSettings(BaseSettings):
-    use_gunicorn: bool
     gunicorn_log_level: str
     cores_number: int
     keep_alive: int
