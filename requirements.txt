@@ -1,7 +1,7 @@
 # Code
 asyncpg>=0.22.0
 aiofiles>=0.6.0, <0.7.0
-fastapi>=0.63.0, <0.64.0
+fastapi>=0.65.1
 gunicorn>=20.1.0
 python-jose[cryptography]>=3.2.0
 uvicorn[standard]
