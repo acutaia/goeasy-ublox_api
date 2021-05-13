@@ -23,7 +23,8 @@ JWT_BEARER  package
 """
 
 # Standard Library
-from functools import lru_cache
+from datetime import timedelta, datetime
+from functools import lru_cache, wraps
 
 # Third Party
 from fastapi import HTTPException, Request, status
@@ -36,27 +37,58 @@ from ..config import get_security_settings
 # --------------------------------------------------------------------------------------------
 
 
+def timed_lru_cache(seconds: int, maxsize: int = 128):
+    """
+    Decorator that turn the LruCache in a TLRUCache
+
+    :param seconds: duration of the cache
+    :param maxsize: number of element stored in the cache (works  better when maxsize is a power-of-two)
+    """
+    def wrapper_cache(func):
+        func = lru_cache(maxsize=maxsize)(func)
+        func.lifetime = timedelta(seconds=seconds)
+        func.expiration = datetime.utcnow() + func.lifetime
+
+        @wraps(func)
+        def wrapped_func(*args, **kwargs):
+            if datetime.utcnow() >= func.expiration:
+                func.cache_clear()
+                func.expiration = datetime.utcnow() + func.lifetime
+            return func(*args, **kwargs)
+        return wrapped_func
+    return wrapper_cache
+
+
+@timed_lru_cache(10, maxsize=16)
+def _jwt_decode(jwt_token: str):
+    """
+    Checks if a token is valid or not
+
+    :param jwt_token: token to check
+    """
+    settings = get_security_settings()
+    try:
+        jwt.decode(
+            jwt_token,
+            f"-----BEGIN PUBLIC KEY-----\n"
+            f"{settings.realm_public_key}"
+            f"\n-----END PUBLIC KEY-----"
+            "",
+            settings.algorithm,
+            issuer=settings.issuer,
+            audience=settings.audience,
+        )
+    except JWTError:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="invalid_bearer_token"
+        )
+
+
 class Signature(HTTPBearer):
     async def __call__(self, request: Request) -> None:
         credentials: HTTPAuthorizationCredentials = await super().__call__(request)
-
         jwt_token = credentials.credentials
-        settings = get_security_settings()
-        try:
-            jwt.decode(
-                jwt_token,
-                f"-----BEGIN PUBLIC KEY-----\n"
-                f"{settings.realm_public_key}"
-                f"\n-----END PUBLIC KEY-----"
-                "",
-                settings.algorithm,
-                issuer=settings.issuer,
-                audience=settings.audience,
-            )
-        except JWTError:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED, detail="invalid_bearer_token"
-            )
+        _jwt_decode(jwt_token)
 
 
 @lru_cache(maxsize=1)
