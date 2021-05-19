@@ -44,6 +44,7 @@ def timed_lru_cache(seconds: int, maxsize: int = 128):
     :param seconds: duration of the cache
     :param maxsize: number of element stored in the cache (works  better when maxsize is a power-of-two)
     """
+
     def wrapper_cache(func):
         func = lru_cache(maxsize=maxsize)(func)
         func.lifetime = timedelta(seconds=seconds)
@@ -55,7 +56,9 @@ def timed_lru_cache(seconds: int, maxsize: int = 128):
                 func.cache_clear()
                 func.expiration = datetime.utcnow() + func.lifetime
             return func(*args, **kwargs)
+
         return wrapped_func
+
     return wrapper_cache
 
 

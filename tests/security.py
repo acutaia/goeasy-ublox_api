@@ -21,7 +21,6 @@ Security Utilities for testing
     See the License for the specific language governing permissions and
     limitations under the License.
 """
-"""
 
 # Standard library
 from datetime import datetime, timedelta
