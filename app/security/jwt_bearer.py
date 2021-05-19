@@ -59,7 +59,7 @@ def timed_lru_cache(seconds: int, maxsize: int = 128):
     return wrapper_cache
 
 
-@timed_lru_cache(10, maxsize=16)
+@timed_lru_cache(180, maxsize=16)
 def _jwt_decode(jwt_token: str):
     """
     Checks if a token is valid or not
