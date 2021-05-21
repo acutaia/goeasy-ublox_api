@@ -10,6 +10,7 @@ ujson>=4.0.2
 # Testing
 flake8
 black
+requests
 pytest>=6.2.2
 pytest-asyncio>=0.14.0
 pytest-cov>=2.11.1
