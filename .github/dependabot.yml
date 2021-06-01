@@ -24,5 +24,5 @@ updates:
       - "actions"
       - "dependencies"
     commit-message:
-      prefix: ":robot: "
+      prefix: ":robot:"
       include: "scope"
