@@ -21,7 +21,7 @@ repo_url: https://github.com/acutaia/goeasy-ublox_api
 
 nav:
   - GoEasy: index.md
-  - Ublox reference service platform:
+  - Ublox Service:
       - ublox_reference_service_platform/overview.md
       - ublox_reference_service_platform/ublox_api.md
   - Deployment: deployment.md
