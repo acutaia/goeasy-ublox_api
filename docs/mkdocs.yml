@@ -16,7 +16,7 @@ theme:
     repo: fontawesome/brands/github
   logo: img/index.png
   favicon: img/satellite.png
-repo_name: acutaia/goeasy-serengeti
+repo_name: acutaia/goeasy-ublox_api
 repo_url: https://github.com/acutaia/goeasy-ublox_api
 
 nav:
