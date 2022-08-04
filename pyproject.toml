@@ -16,7 +16,7 @@ uvicorn = {extras = ["standard"], version = "^0.18.1"}
 ujson = "^5.0.0"
 
 [tool.poetry.dev-dependencies]
-flake8 = "^4.0.0"
+flake8 = "^5.0.4"
 black = "^22.1"
 requests = "^2.25.1"
 pytest = "^7.0.0"
